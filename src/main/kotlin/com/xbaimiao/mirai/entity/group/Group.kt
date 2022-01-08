@@ -3,7 +3,10 @@ package com.xbaimiao.mirai.entity.group
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.xbaimiao.mirai.entity.MiraiMessageTransmittable
-import com.xbaimiao.mirai.message.Message
+import com.xbaimiao.mirai.message.MiraiJsonSerializer
+import com.xbaimiao.mirai.message.component.Component
+import com.xbaimiao.mirai.message.component.TextComponent
+import com.xbaimiao.mirai.packet.impl.group.GroupMessagePacket
 
 class Group(
     /**
@@ -20,15 +23,24 @@ class Group(
      * 机器人在此群的权限
      */
     @SerializedName("permission")
-    val botPermission: BotPermission
+    val botPermission: BotPermission,
+
+    /**
+     * 会话Key
+     */
+    @SerializedName("sessionKey")
+    internal val sessionKey: String
 ) : MiraiMessageTransmittable {
 
-    override fun reply(message: Message) {
-        TODO("Not yet implemented")
+    override fun reply(message: Component) {
+        println(GroupMessagePacket(MiraiJsonSerializer(this, message).serializer()).toJson())
+        GroupMessagePacket(MiraiJsonSerializer(this, message).serializer()).sendAsync {
+            println(this.body())
+        }
     }
 
     override fun reply(message: String) {
-        TODO("Not yet implemented")
+        GroupMessagePacket(MiraiJsonSerializer(this, TextComponent(message)).serializer()).sendAsync()
     }
 
     override fun toString(): String {

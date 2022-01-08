@@ -1,4 +1,4 @@
-package com.xbaimiao.mirai.packet.impl
+package com.xbaimiao.mirai.packet.impl.group
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -7,9 +7,9 @@ import com.xbaimiao.mirai.packet.Packet
 import com.xbaimiao.mirai.packet.enums.HttpMethod
 import java.io.StringReader
 
-class GroupListPacket(session: String) : Packet() {
+class GroupListPacket(private val session: String) : Packet() {
 
-    val groups = ArrayList<com.xbaimiao.mirai.entity.MiraiMessageTransmittable>()
+    val groups = ArrayList<Group>()
 
     override val httpMethod: HttpMethod = HttpMethod.GET
 
@@ -25,6 +25,7 @@ class GroupListPacket(session: String) : Packet() {
             }
             jsonObject.get("data").asJsonArray.forEach {
                 it.asJsonObject.apply {
+                    this.addProperty("sessionKey",session)
                     groups.add(Gson().fromJson(this.toString(), Group::class.java))
                 }
             }

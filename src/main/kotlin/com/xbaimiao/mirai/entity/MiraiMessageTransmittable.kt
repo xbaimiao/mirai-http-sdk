@@ -1,6 +1,6 @@
 package com.xbaimiao.mirai.entity
 
-import com.xbaimiao.mirai.message.Message
+import com.xbaimiao.mirai.message.component.Component
 
 interface MiraiMessageTransmittable {
 
@@ -12,6 +12,6 @@ interface MiraiMessageTransmittable {
     /**
      * 发送消息
      */
-    fun reply(message: Message)
+    fun reply(message: Component)
 
 }

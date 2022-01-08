@@ -2,14 +2,28 @@ package com.xbaimiao.mirai.message.component
 
 abstract class Component : BaseComponent {
 
-    val list = ArrayList<BaseComponent>()
+    private val components = ArrayList<BaseComponent>()
+    private var isAddSelf = false
 
-    fun append(baseComponent: BaseComponent) {
-        if (this is TextComponent && baseComponent is TextComponent) {
-            this.string = this.string + baseComponent.string
-            return
+    fun append(component: Component): Component {
+        if (this is TextComponent && component is TextComponent) {
+            this.string = this.string + component.string
+            return this
         }
-        list.add(baseComponent)
+        if (!isAddSelf) {
+            components.add(this)
+            isAddSelf = false
+        }
+        components.add(component)
+        return this
+    }
+
+    fun getComponents(): List<BaseComponent> {
+        if (!isAddSelf) {
+            components.add(this)
+            isAddSelf = false
+        }
+        return components
     }
 
 }

@@ -21,6 +21,10 @@ abstract class Packet {
     abstract val targetedPath: String
     abstract fun <T : Packet> read(): T
 
+    open fun toJson(): String {
+        return gson.toJson(this)
+    }
+
     open fun send(func: HttpResponse<String>.() -> Unit = {}) {
         func.invoke(httpClient.send(buildRequest(), HttpResponse.BodyHandlers.ofString()))
     }
@@ -32,7 +36,7 @@ abstract class Packet {
     }
 
     fun buildRequest(): HttpRequest {
-        val packet: String = gson.toJson(this)
+        val packet: String = toJson()
         var builder = HttpRequest.newBuilder(URI("${MiraiHttpSDK.sdkConfig.baseUrl}$targetedPath"))
         builder = if (httpMethod == HttpMethod.GET) {
             builder.GET()

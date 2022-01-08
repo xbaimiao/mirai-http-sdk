@@ -1,4 +1,5 @@
 package com.xbaimiao.mirai.message
 
-interface Message {
-}
+import com.xbaimiao.mirai.message.component.Component
+
+class Message(internal val component: Component)
