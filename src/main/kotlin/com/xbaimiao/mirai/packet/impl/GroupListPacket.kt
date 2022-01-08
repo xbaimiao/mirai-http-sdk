@@ -1,15 +1,15 @@
 package com.xbaimiao.mirai.packet.impl
 
+import com.google.gson.Gson
 import com.google.gson.JsonParser
-import com.xbaimiao.mirai.entity.Group
-import com.xbaimiao.mirai.entity.GroupImpl
+import com.xbaimiao.mirai.entity.group.Group
 import com.xbaimiao.mirai.packet.Packet
 import com.xbaimiao.mirai.packet.enums.HttpMethod
 import java.io.StringReader
 
 class GroupListPacket(session: String) : Packet() {
 
-    val groups = ArrayList<Group>()
+    val groups = ArrayList<com.xbaimiao.mirai.entity.MiraiMessageTransmittable>()
 
     override val httpMethod: HttpMethod = HttpMethod.GET
 
@@ -25,13 +25,7 @@ class GroupListPacket(session: String) : Packet() {
             }
             jsonObject.get("data").asJsonArray.forEach {
                 it.asJsonObject.apply {
-                    groups.add(
-                        GroupImpl(
-                            this.get("name").asString,
-                            this.get("id").asLong,
-                            Group.BotPermission.valueOf(this.get("permission").asString)
-                        )
-                    )
+                    groups.add(Gson().fromJson(this.toString(), Group::class.java))
                 }
             }
         }
