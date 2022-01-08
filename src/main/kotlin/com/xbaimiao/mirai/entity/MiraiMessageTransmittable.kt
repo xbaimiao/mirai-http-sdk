@@ -1,17 +1,16 @@
 package com.xbaimiao.mirai.entity
 
-import com.xbaimiao.mirai.message.component.Component
+import com.xbaimiao.mirai.message.component.BaseComponent
+import com.xbaimiao.mirai.packet.enums.MessageType
 
 interface MiraiMessageTransmittable {
 
-    /**
-     * 发送文本消息
-     */
-    fun reply(message: String)
+    val id: Long
+
+    val type: MessageType
 
     /**
      * 发送消息
      */
-    fun reply(message: Component)
-
+    fun send(message: BaseComponent)
 }

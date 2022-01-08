@@ -1,5 +1,9 @@
 package com.xbaimiao.mirai.message
 
-import com.xbaimiao.mirai.message.component.Component
+import com.xbaimiao.mirai.entity.MiraiMessageTransmittable
+import com.xbaimiao.mirai.message.component.BaseComponent
 
-class Message(internal val component: Component)
+interface Message {
+    val target: MiraiMessageTransmittable
+    val component: BaseComponent
+}

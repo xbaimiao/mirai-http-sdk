@@ -1,33 +1,11 @@
 package com.xbaimiao.mirai.message.component
 
-abstract class Component : BaseComponent {
+import com.xbaimiao.mirai.message.component.impl.ImageComponentImpl
+import com.xbaimiao.mirai.message.component.impl.TextComponentImpl
+import java.net.URL
 
-    private val components = ArrayList<BaseComponent>()
-    private var isAddSelf = false
-
-    fun append(component: Component): Component {
-        if (this is TextComponent && component is TextComponent) {
-            this.string = this.string + component.string
-            return this
-        }
-        if (!isAddSelf) {
-            components.add(this)
-            isAddSelf = false
-        }
-        components.add(component)
-        return this
-    }
-
-    fun getComponents(): List<BaseComponent> {
-        if (!isAddSelf) {
-            components.add(this)
-            isAddSelf = false
-        }
-        return components
-    }
-
+@Suppress("unused")
+object Component {
+    fun text(text: String): TextComponent = TextComponentImpl(text)
+    fun image(url: URL): ImageComponent = ImageComponentImpl(url)
 }
-
-class TextComponent(var string: String) : Component()
-
-class ImageComponent(var url: String) : Component()
