@@ -3,6 +3,7 @@
 package com.xbaimiao.mirai.message.serialize
 
 import com.xbaimiao.mirai.message.serialize.impl.MessageJsonSerializerImpl
+import com.xbaimiao.mirai.message.serialize.impl.MessagePlainTextSerializerImpl
 
 interface MessageSerializer {
 
@@ -13,6 +14,6 @@ interface MessageSerializer {
 
         @JvmStatic
         @get:JvmName("plainText")
-        val plainText = MessageJsonSerializerImpl
+        val plainText = MessagePlainTextSerializerImpl
     }
 }
