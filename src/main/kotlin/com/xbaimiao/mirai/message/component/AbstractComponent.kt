@@ -14,6 +14,10 @@ abstract class AbstractComponent protected constructor(
     override fun toList(): List<BaseComponent> =
         ComponentList(children.toMutableList().apply { add(0, fromChildren(emptyList())) })
 
+    override fun flattenToList(): List<BaseComponent> {
+        TODO("Not yet implemented")
+    }
+
     override operator fun plus(other: BaseComponent) = append(other)
 
     override fun toString() = "AbstractComponent(children=$children)"

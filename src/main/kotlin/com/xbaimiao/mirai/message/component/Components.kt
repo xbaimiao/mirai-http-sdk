@@ -1,5 +1,6 @@
 package com.xbaimiao.mirai.message.component
 
+import com.xbaimiao.mirai.message.component.elements.AtTarget
 import java.net.URL
 
 interface TextComponent : BaseComponent {
@@ -10,14 +11,12 @@ interface ImageComponent : BaseComponent {
     val url: URL
 }
 
-interface AtComponent : AtAllComponent {
-    val target: Long
+interface AtComponent : BaseComponent {
+    val target: AtTarget
     val display: String
 }
 
-interface AtAllComponent : BaseComponent
-
-interface FaceComponent : BaseComponent {
-    val faceId: Int
+interface EmojiComponent : BaseComponent {
+    val emojiId: Int
     val name: String
 }

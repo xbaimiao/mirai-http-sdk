@@ -1,7 +1,7 @@
 package com.xbaimiao.mirai.entity
 
-interface MiraiNumberIdentifiable<T> {
-    val id: Long
+interface MiraiNumberIdentifiable<T : Number> {
+    val id: T
 }
 
 interface MiraiNumberQueryable<T : MiraiNumberIdentifiable<*>> {

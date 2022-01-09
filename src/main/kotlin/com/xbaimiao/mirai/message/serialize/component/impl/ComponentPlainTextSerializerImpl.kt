@@ -1,4 +1,4 @@
-package com.xbaimiao.mirai.message.serialize.impl
+package com.xbaimiao.mirai.message.serialize.component.impl
 
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.component.ImageComponent
@@ -8,7 +8,7 @@ import com.xbaimiao.mirai.message.serialize.component.ComponentPlainTextSerializ
 object ComponentPlainTextSerializerImpl : ComponentPlainTextSerializer {
 
     override fun serialize(value: BaseComponent) =
-        value.toList().joinToString(separator = "", transform = ::asText)
+        value.toList().joinToString(separator = "", transform = ComponentPlainTextSerializerImpl::asText)
 
     private fun asText(component: BaseComponent) = when (component) {
         is TextComponent -> component.string

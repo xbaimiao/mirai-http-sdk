@@ -1,7 +1,7 @@
 package com.xbaimiao.mirai.message.serialize.component
 
-import com.xbaimiao.mirai.message.serialize.impl.ComponentJsonSerializerImpl
-import com.xbaimiao.mirai.message.serialize.impl.ComponentPlainTextSerializerImpl
+import com.xbaimiao.mirai.message.serialize.component.impl.ComponentJsonSerializerImpl
+import com.xbaimiao.mirai.message.serialize.component.impl.ComponentPlainTextSerializerImpl
 
 interface ComponentSerializer {
 

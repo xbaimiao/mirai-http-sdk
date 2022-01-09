@@ -2,16 +2,18 @@ package com.xbaimiao.mirai.message.component.impl
 
 import com.google.gson.JsonArray
 import com.xbaimiao.mirai.message.component.AbstractComponent
+import com.xbaimiao.mirai.message.component.AtComponent
 import com.xbaimiao.mirai.message.component.BaseComponent
-import com.xbaimiao.mirai.message.component.TextComponent
 import com.xbaimiao.mirai.message.component.collections.ComponentList
+import com.xbaimiao.mirai.message.component.elements.AtTarget
 
-class TextComponentImpl(
-    override val string: String,
+class AtComponentImpl(
+    override val target: AtTarget,
+    override val display: String,
     children: List<BaseComponent> = ComponentList()
-) : AbstractComponent(children), TextComponent {
+) : AtComponent, AbstractComponent(children) {
 
-    override fun fromChildren(children: List<BaseComponent>) = TextComponentImpl(string, children)
+    override fun fromChildren(children: List<BaseComponent>): BaseComponent = AtComponentImpl(target, display, children)
 
     override fun serializeToJson(): JsonArray {
         TODO("Not yet implemented")

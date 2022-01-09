@@ -26,7 +26,7 @@ class Group(
      */
     @SerializedName("permission")
     val permission: Permission
-) : MiraiMessageTransmittable, MiraiNumberIdentifiable<Group> {
+) : MiraiMessageTransmittable, MiraiNumberIdentifiable<Long> {
 
     companion object Factory : MiraiNumberQueryable<Group> {
         override fun fromId(id: Long): Group {
@@ -53,5 +53,4 @@ class Group(
     override fun toString(): String {
         return Gson().toJson(this)
     }
-
 }

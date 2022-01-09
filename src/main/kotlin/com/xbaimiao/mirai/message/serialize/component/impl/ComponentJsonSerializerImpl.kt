@@ -1,4 +1,4 @@
-package com.xbaimiao.mirai.message.serialize.impl
+package com.xbaimiao.mirai.message.serialize.component.impl
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -56,7 +56,7 @@ object ComponentJsonSerializerImpl : ComponentJsonSerializer {
             addProperty("type", AT_ALL.key)
         }
         // emoji
-        is FaceComponent -> JsonObject().apply {
+        is EmojiComponent -> JsonObject().apply {
             addProperty("type", FACE.key)
             addProperty("faceId", this@toJson.faceId)
             addProperty("name", this@toJson.name)
