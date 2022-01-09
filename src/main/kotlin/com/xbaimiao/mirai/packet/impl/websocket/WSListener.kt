@@ -6,7 +6,7 @@ import com.xbaimiao.mirai.MiraiHttpSDK
 import com.xbaimiao.mirai.entity.MemberFriend
 import com.xbaimiao.mirai.event.group.GroupMessageEvent
 import com.xbaimiao.mirai.eventbus.EventChancel
-import com.xbaimiao.mirai.message.serialize.ComponentSerializer
+import com.xbaimiao.mirai.message.serialize.component.ComponentSerializer
 import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
 import java.net.http.WebSocket
@@ -16,7 +16,7 @@ import java.util.concurrent.CompletionStage
 /**
  * 监听器
  */
-class WSListener(private val webSocketBot: WebSocketBot) : WebSocket.Listener {
+class WSListener : WebSocket.Listener {
 
     val putPackets = HashMap<Long, CommandPacket<*>>()
     var buffer = StringBuilder()

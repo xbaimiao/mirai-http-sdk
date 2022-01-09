@@ -5,7 +5,6 @@ import com.google.gson.JsonParser
 import com.xbaimiao.mirai.packet.CommandPacket
 import com.xbaimiao.mirai.packet.enums.MessageType
 import java.io.StringReader
-import java.util.concurrent.CompletableFuture
 
 class MessagePacket(json: JsonObject, type: MessageType) : CommandPacket<MessagePacket>(
     command = type.command,
@@ -16,7 +15,6 @@ class MessagePacket(json: JsonObject, type: MessageType) : CommandPacket<Message
 
     override fun put(json: String): MessagePacket {
         val jsonObject = JsonParser.parseReader(StringReader(json)).asJsonObject.getAsJsonObject("data")
-        println(json)
         if (jsonObject.get("msg").asString == "success") {
             messageId = jsonObject.get("messageId").asInt
         }

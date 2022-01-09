@@ -6,7 +6,7 @@ import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.component.Component
 import com.xbaimiao.mirai.message.component.ImageComponent
 import com.xbaimiao.mirai.message.component.TextComponent
-import com.xbaimiao.mirai.message.serialize.ComponentJsonSerializer
+import com.xbaimiao.mirai.message.serialize.component.ComponentJsonSerializer
 import java.net.URL
 
 object ComponentJsonSerializerImpl : ComponentJsonSerializer {
@@ -22,11 +22,10 @@ object ComponentJsonSerializerImpl : ComponentJsonSerializer {
         value.forEach {
             when (it.asJsonObject.get("type").asString) {
                 "Source" -> {}
-                "Plain" -> component = component.append(Component.text(it.asJsonObject.get("text").asString))
-                "Image" -> component = component.append(Component.image(URL(it.asJsonObject.get("url").asString)))
+                "Plain" -> component += Component.text(it.asJsonObject.get("text").asString)
+                "Image" -> component += Component.image(URL(it.asJsonObject.get("url").asString))
             }
         }
-        println(value)
         return component
     }
 

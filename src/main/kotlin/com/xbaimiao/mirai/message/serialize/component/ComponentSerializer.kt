@@ -1,4 +1,4 @@
-package com.xbaimiao.mirai.message.serialize
+package com.xbaimiao.mirai.message.serialize.component
 
 import com.xbaimiao.mirai.message.serialize.impl.ComponentJsonSerializerImpl
 import com.xbaimiao.mirai.message.serialize.impl.ComponentPlainTextSerializerImpl

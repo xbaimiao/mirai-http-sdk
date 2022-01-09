@@ -20,13 +20,15 @@ object MiraiHttpSDK {
 
     @Subscribe
     fun a(event: GroupMessageEvent) {
-        println(event.plainText)
+        if (event.plainText == "牛逼不"){
+            event.reply("牛逼牛逼")
+        }
+        println("群消息${event.group.id} -> ${event.sender.nickName}(${event.sender.id}): ${event.plainText}")
     }
 
     fun init() {
         bot = WebSocketBot(webSocketBotConfig).connect()
         bot.join()
-        Component.text("大武当挖的安慰安慰") + Component.text("大武当挖的安慰安慰")
         bot.getGroups().thenApply {
             for (group in it) {
                 if (group.id == 418888134L) {

@@ -3,7 +3,7 @@ package com.xbaimiao.mirai.entity
 import com.xbaimiao.mirai.message.Message
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.impl.MessageImpl
-import com.xbaimiao.mirai.message.serialize.MessageSerializer
+import com.xbaimiao.mirai.message.serialize.message.MessageSerializer
 import com.xbaimiao.mirai.packet.enums.MessageType
 import com.xbaimiao.mirai.packet.impl.group.MessagePacket
 import java.util.concurrent.CompletableFuture

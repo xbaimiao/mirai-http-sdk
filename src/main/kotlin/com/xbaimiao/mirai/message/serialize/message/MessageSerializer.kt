@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.xbaimiao.mirai.message.serialize
+package com.xbaimiao.mirai.message.serialize.message
 
 import com.xbaimiao.mirai.message.serialize.impl.MessageJsonSerializerImpl
 import com.xbaimiao.mirai.message.serialize.impl.MessagePlainTextSerializerImpl

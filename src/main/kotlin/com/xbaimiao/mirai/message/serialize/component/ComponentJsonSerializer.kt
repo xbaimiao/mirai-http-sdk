@@ -1,8 +1,9 @@
-package com.xbaimiao.mirai.message.serialize
+package com.xbaimiao.mirai.message.serialize.component
 
 import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.xbaimiao.mirai.message.component.BaseComponent
+import com.xbaimiao.mirai.message.serialize.MiraiDeserializer
+import com.xbaimiao.mirai.message.serialize.MiraiSerializer
 
 interface ComponentJsonSerializer :
     MiraiSerializer<BaseComponent, JsonArray>,

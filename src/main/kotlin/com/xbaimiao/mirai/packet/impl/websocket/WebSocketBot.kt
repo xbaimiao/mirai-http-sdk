@@ -45,7 +45,7 @@ class WebSocketBot(config: WebSocketBotConfig) {
 
     fun connect(): WebSocketBot {
         webSocket =
-            httpClient.newWebSocketBuilder().buildAsync(URI(url), WSListener(this).also { wsListener = it }).join()
+            httpClient.newWebSocketBuilder().buildAsync(URI(url), WSListener().also { wsListener = it }).join()
         return this
     }
 

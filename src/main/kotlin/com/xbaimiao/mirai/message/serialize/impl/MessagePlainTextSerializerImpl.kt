@@ -1,7 +1,7 @@
 package com.xbaimiao.mirai.message.serialize.impl
 
 import com.xbaimiao.mirai.message.Message
-import com.xbaimiao.mirai.message.serialize.MessagePlainTextSerializer
+import com.xbaimiao.mirai.message.serialize.message.MessagePlainTextSerializer
 
 object MessagePlainTextSerializerImpl : MessagePlainTextSerializer {
 

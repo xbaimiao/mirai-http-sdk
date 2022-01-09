@@ -3,8 +3,8 @@ package com.xbaimiao.mirai.message.serialize.impl
 import com.google.gson.JsonObject
 import com.xbaimiao.mirai.entity.MemberFriend
 import com.xbaimiao.mirai.message.Message
-import com.xbaimiao.mirai.message.serialize.ComponentSerializer
-import com.xbaimiao.mirai.message.serialize.MessageJsonSerializer
+import com.xbaimiao.mirai.message.serialize.component.ComponentSerializer
+import com.xbaimiao.mirai.message.serialize.message.MessageJsonSerializer
 
 object MessageJsonSerializerImpl : MessageJsonSerializer {
 
