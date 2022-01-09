@@ -9,3 +9,15 @@ interface TextComponent : BaseComponent {
 interface ImageComponent : BaseComponent {
     val url: URL
 }
+
+interface AtComponent : AtAllComponent {
+    val target: Long
+    val display: String
+}
+
+interface AtAllComponent : BaseComponent
+
+interface FaceComponent : BaseComponent {
+    val faceId: Int
+    val name: String
+}

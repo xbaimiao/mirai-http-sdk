@@ -21,31 +21,17 @@ object MiraiHttpSDK {
     @Subscribe
     fun a(event: GroupMessageEvent) {
         if (event.plainText == "牛逼不"){
-            event.reply("牛逼牛逼")
+            try {
+                event.reply(Component.atAll())
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
         }
-        println("群消息${event.group.id} -> ${event.sender.nickName}(${event.sender.id}): ${event.plainText}")
+        println("群{${event.group.name}(${event.group.id})} -> ${event.sender.nickName}(${event.sender.id}): ${event.plainText}")
     }
 
     fun init() {
         bot = WebSocketBot(webSocketBotConfig).connect()
         bot.join()
-        bot.getGroups().thenApply {
-            for (group in it) {
-                if (group.id == 418888134L) {
-                    group.getMembers().thenAcceptAsync { members ->
-                        for (friend in members) {
-                            if (friend.id == 3104026189) {
-                                println(1)
-                                try {
-                                    friend.sendMessage(Component.text("大武当挖的安慰安慰") + Component.text("大武当挖的安慰安慰"))
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }
