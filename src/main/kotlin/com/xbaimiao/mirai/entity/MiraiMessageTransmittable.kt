@@ -10,9 +10,15 @@ import java.util.concurrent.CompletableFuture
 
 interface MiraiMessageTransmittable {
 
-    companion object Factory {
+    val id: Long
 
-        fun BaseComponent.sendTo(
+    /**
+     * 发送消息
+     */
+    fun sendMessage(component: BaseComponent): CompletableFuture<Message>
+
+    companion object Factory {
+        internal fun BaseComponent.sendTo(
             miraiMessageTransmittable: MiraiMessageTransmittable,
             type: MessageType
         ): CompletableFuture<Message> {
@@ -26,14 +32,5 @@ interface MiraiMessageTransmittable {
             }
             return future
         }
-
     }
-
-    val id: Long
-
-    /**
-     * 发送消息
-     */
-    fun sendMessage(component: BaseComponent): CompletableFuture<Message>
-
 }

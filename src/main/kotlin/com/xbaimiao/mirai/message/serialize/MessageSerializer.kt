@@ -5,27 +5,33 @@ package com.xbaimiao.mirai.message.serialize
 import com.google.gson.JsonObject
 import com.xbaimiao.mirai.entity.MemberFriend
 import com.xbaimiao.mirai.message.Message
-import com.xbaimiao.mirai.message.serialize.impl.ComponentSerializer
 
-interface MessageDeserializer<S, D> {
-    fun deserializer(input: D): S
-}
+sealed interface MessageSerializer {
 
-interface MessageSerializer<S, D> {
-    fun serialize(input: S): D
+    object Json : MiraiSerializer<Message, JsonObject>, MiraiDeserializer<JsonObject, Message>, MessageSerializer {
 
-    object Json : MessageSerializer<Message, JsonObject> {
-
-        override fun serialize(input: Message): JsonObject {
+        override fun serialize(value: Message): JsonObject {
             val jsonObject = JsonObject()
-            if (input.target is MemberFriend) {
-                jsonObject.addProperty("qq", input.target.id)
-                jsonObject.addProperty("group", (input.target as MemberFriend).group.id)
+            if (value.target is MemberFriend) {
+                jsonObject.addProperty("qq", value.target.id)
+                jsonObject.addProperty("group", (value.target as MemberFriend).group.id)
             } else {
-                jsonObject.addProperty("target", input.target.id)
+                jsonObject.addProperty("target", value.target.id)
             }
-            jsonObject.add("messageChain", ComponentSerializer.serialize(input.component))
+            jsonObject.add("messageChain", ComponentSerializer.Json.serialize(value.component))
             return jsonObject
+        }
+
+        override fun deserialize(value: JsonObject): Message {
+            TODO()
+        }
+
+    }
+
+    object PlainText : MiraiSerializer<Message, String>, MessageSerializer {
+
+        override fun serialize(value: Message): String {
+            TODO()
         }
 
     }
