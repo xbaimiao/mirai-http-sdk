@@ -2,6 +2,7 @@ package com.xbaimiao.mirai.packet.impl.websocket
 
 import com.google.gson.JsonParser
 import com.xbaimiao.mirai.MiraiHttpSDK
+import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
 import java.net.http.WebSocket
 import java.util.concurrent.CompletableFuture
@@ -10,7 +11,9 @@ import java.util.concurrent.CompletionStage
 /**
  * 监听器
  */
-class WSListener(val bindWSPacket: BindWSPacket) : WebSocket.Listener {
+class WSListener(private val bindWSPacket: BindWSPacket) : WebSocket.Listener {
+
+    val putPackets = HashMap<Long, CommandPacket<*>>()
 
     override fun onOpen(webSocket: WebSocket) {
         webSocket.request(1)
@@ -30,17 +33,21 @@ class WSListener(val bindWSPacket: BindWSPacket) : WebSocket.Listener {
         val text = charSequence.toString()
         try {
             val jsonObject = JsonParser.parseReader(StringReader(text)).asJsonObject
-            when (jsonObject.get("syncId").asString) {
-                "" -> {
-                    jsonObject.get("data").asJsonObject.let { data ->
-                        bindWSPacket.session = data.get("session").asString
-                        bindWSPacket.code = data.get("code").asInt
-                    }
-                }
-                "-1" -> {
-                    println(jsonObject.toString())
+            if (!jsonObject.has("syncId")) {
+                return CompletableFuture<Any>()
+            }
+            val syncId = jsonObject.get("syncId").asString
+            if (syncId == "-1" || syncId == "") {
+                //肯定是消息
+                println(text)
+                return CompletableFuture<Any>()
+            }
+            putPackets.keys.forEach {
+                if (syncId.toLong() == it) {
+                    putPackets[it]!!.put(jsonObject.toString())
                 }
             }
+            putPackets.remove(syncId.toLong())
         } catch (e: Exception) {
             e.printStackTrace()
         }

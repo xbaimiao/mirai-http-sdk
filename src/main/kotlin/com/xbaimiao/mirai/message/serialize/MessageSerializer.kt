@@ -18,8 +18,6 @@ sealed interface MessageSerializer<S, D> {
             val jsonObject = JsonObject()
 
             jsonObject.addProperty("target", input.target.id)
-            jsonObject.addProperty("command", input.target.type.command)
-
             val jsonArray = JsonArray()
             jsonArray.add(input.component.toJson())
             input.component.children

@@ -1,36 +1,31 @@
 package com.xbaimiao.mirai.packet.impl.group
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.xbaimiao.mirai.entity.group.Group
-import com.xbaimiao.mirai.packet.Packet
-import com.xbaimiao.mirai.packet.enums.HttpMethod
+import com.xbaimiao.mirai.entity.Group
+import com.xbaimiao.mirai.packet.CommandPacket
+import com.xbaimiao.mirai.packet.SyncIdPool
 import java.io.StringReader
+import java.util.concurrent.CompletableFuture
 
-class GroupListPacket(private val session: String) : Packet() {
+class GroupListPacket : CommandPacket<GroupListPacket>(
+    SyncIdPool.next(), "groupList", null, JsonObject()
+) {
 
     val groups = ArrayList<Group>()
 
-    override val httpMethod: HttpMethod = HttpMethod.GET
-
-    override val targetedPath: String = "groupList?sessionKey=${session}"
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : Packet> read(): T {
-        this.send {
-            val body = this.body()
-            val jsonObject = JsonParser.parseReader(StringReader(body)).asJsonObject
-            if (jsonObject.get("code").asInt != 0) {
-                return@send
-            }
-            jsonObject.get("data").asJsonArray.forEach {
-                it.asJsonObject.apply {
-                    this.addProperty("sessionKey",session)
-                    groups.add(Gson().fromJson(this.toString(), Group::class.java))
-                }
+    override fun put(json: String): GroupListPacket {
+        val jsonObject = JsonParser.parseReader(StringReader(json)).asJsonObject
+        jsonObject.get("data").asJsonObject.get("data").asJsonArray.forEach {
+            it.asJsonObject.apply {
+                groups.add(Gson().fromJson(this.toString(), Group::class.java))
             }
         }
-        return this as T
+        future.complete(this)
+        return this
     }
+
+    override val future = CompletableFuture<GroupListPacket>()
 
 }

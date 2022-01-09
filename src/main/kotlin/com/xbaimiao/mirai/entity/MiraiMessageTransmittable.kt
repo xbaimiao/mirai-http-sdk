@@ -12,5 +12,5 @@ interface MiraiMessageTransmittable {
     /**
      * 发送消息
      */
-    fun send(message: BaseComponent)
+    fun sendMessage(message: BaseComponent)
 }

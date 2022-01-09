@@ -1,14 +1,13 @@
-package com.xbaimiao.mirai.entity.group
+package com.xbaimiao.mirai.entity
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.xbaimiao.mirai.entity.MiraiMessageTransmittable
-import com.xbaimiao.mirai.entity.MiraiNumberIdentifiable
-import com.xbaimiao.mirai.entity.MiraiNumberQueryable
-import com.xbaimiao.mirai.message.serialize.MiraiJsonSerializer
-import com.xbaimiao.mirai.message.component.Component
-import com.xbaimiao.mirai.message.component.TextComponent
-import com.xbaimiao.mirai.packet.impl.group.GroupMessagePacket
+import com.xbaimiao.mirai.message.component.BaseComponent
+import com.xbaimiao.mirai.message.impl.MessageImpl
+import com.xbaimiao.mirai.message.serialize.MessageSerializer
+import com.xbaimiao.mirai.packet.SyncIdPool
+import com.xbaimiao.mirai.packet.enums.MessageType
+import com.xbaimiao.mirai.packet.impl.group.MessagePacket
 
 class Group(
     /**
@@ -32,7 +31,9 @@ class Group(
      */
     @SerializedName("sessionKey")
     internal val sessionKey: String
+
 ) : MiraiMessageTransmittable, MiraiNumberIdentifiable<Group> {
+    override val type: MessageType = MessageType.GROUP
 
     companion object Factory : MiraiNumberQueryable<Group> {
         override fun fromId(id: Long): Group {
@@ -44,25 +45,17 @@ class Group(
         }
     }
 
-    override fun reply(message: Component) {
-        println(GroupMessagePacket(MiraiJsonSerializer(this, message).serializer()).toJson())
-        GroupMessagePacket(MiraiJsonSerializer(this, message).serializer()).sendAsync {
-            println(this.body())
-        }
-    }
-
-    override fun reply(message: String) {
-        GroupMessagePacket(MiraiJsonSerializer(this, TextComponent(message)).serializer()).sendAsync()
+    override fun sendMessage(message: BaseComponent) {
+        println("发送消息")
+        val jsonObject = MessageSerializer.Json.serialize(MessageImpl(this, message))
+        println(jsonObject.toString())
+//        val packet = MessagePacket(jsonObject, type)
+        println(SyncIdPool.next())
+        println(jsonObject)
     }
 
     override fun toString(): String {
         return Gson().toJson(this)
-    }
-
-    companion object {
-        fun fromId(id: Long): Group {
-            TODO()
-        }
     }
 
     enum class BotPermission {
