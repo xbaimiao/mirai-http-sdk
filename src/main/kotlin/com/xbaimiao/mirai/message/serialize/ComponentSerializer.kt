@@ -15,7 +15,7 @@ sealed interface ComponentSerializer {
 
         override fun serialize(value: BaseComponent): JsonObject {
             val jsonArray = JsonArray()
-            value.asList()
+            value.toList()
                 .map { it.toJson() }
                 .forEach(jsonArray::add)
             return jsonArray.asJsonObject
@@ -41,7 +41,7 @@ sealed interface ComponentSerializer {
     object PlainText : MiraiSerializer<BaseComponent, String>, ComponentSerializer {
 
         override fun serialize(value: BaseComponent) =
-            value.asList().joinToString(transform = ::asText)
+            value.toList().joinToString(transform = ::asText)
 
         private fun asText(component: BaseComponent) = when (component) {
             is TextComponent -> component.string

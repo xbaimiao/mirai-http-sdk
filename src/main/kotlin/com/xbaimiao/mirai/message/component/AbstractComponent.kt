@@ -11,7 +11,7 @@ abstract class AbstractComponent protected constructor(
 
     abstract fun fromChildren(children: List<BaseComponent>): BaseComponent
 
-    override fun asList(): List<BaseComponent> =
+    override fun toList(): List<BaseComponent> =
         ComponentList(children.toMutableList().apply { add(0, fromChildren(emptyList())) })
 
     override operator fun plus(other: BaseComponent) = append(other)
