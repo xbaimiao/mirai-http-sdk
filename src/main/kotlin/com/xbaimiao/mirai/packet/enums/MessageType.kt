@@ -8,4 +8,5 @@ enum class MessageType(internal val command: String) {
     companion object {
         fun fromCommand(command: String) = values().first { it.command == command }
     }
+
 }

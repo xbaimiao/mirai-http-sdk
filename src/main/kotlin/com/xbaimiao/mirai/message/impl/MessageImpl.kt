@@ -7,4 +7,6 @@ import com.xbaimiao.mirai.message.component.BaseComponent
 class MessageImpl(
     override val target: MiraiMessageTransmittable,
     override val component: BaseComponent
-) : Message
+) : Message {
+    override var messageId = -9999
+}

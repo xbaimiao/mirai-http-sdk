@@ -6,13 +6,13 @@ import java.util.concurrent.CompletableFuture
 
 abstract class CommandPacket<T>(
     @SerializedName("syncId")
-    val syncId: Long,
+    val syncId: Long = SyncIdPool.next(),
     @SerializedName("command")
     val command: String,
     @SerializedName("subCommand")
-    val subCommand: String?,
+    val subCommand: String? = null,
     @SerializedName("content")
-    val content: JsonObject
+    val content: JsonObject = JsonObject()
 ) : Packet<T> {
 
     open fun serializerToJson(): String {
@@ -28,6 +28,7 @@ abstract class CommandPacket<T>(
     abstract val future: CompletableFuture<T>
 
     override fun send(): CompletableFuture<T> {
+        println(this.serializerToJson())
         bindWSPacket.wsListener.putPackets[syncId] = this
         ws.sendText(this.serializerToJson(), true)
         return future

@@ -1,7 +1,5 @@
 package com.xbaimiao.mirai.entity
 
-import java.util.NoSuchElementException
-
 interface MiraiNumberIdentifiable<T> {
     val id: Long
 }

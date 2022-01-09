@@ -1,6 +1,6 @@
 package com.xbaimiao.mirai.config
 
-data class SDKConfig(
+open class WebSocketBotConfig(
     val baseUrl: String,
     val qq: Long,
     val authKey: String

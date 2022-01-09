@@ -6,8 +6,8 @@ import java.util.concurrent.CompletableFuture
 
 interface Packet<T> {
 
-    val ws: WebSocket get() = MiraiHttpSDK.bindWS.webSocket
-    val bindWSPacket get() = MiraiHttpSDK.bindWS
+    val ws: WebSocket get() = MiraiHttpSDK.bot.webSocket
+    val bindWSPacket get() = MiraiHttpSDK.bot
 
     fun send(): CompletableFuture<T>
 
