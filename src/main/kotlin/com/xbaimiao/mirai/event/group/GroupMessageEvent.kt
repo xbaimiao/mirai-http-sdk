@@ -4,7 +4,7 @@ import com.xbaimiao.mirai.entity.Group
 import com.xbaimiao.mirai.entity.MemberFriend
 import com.xbaimiao.mirai.event.Event
 import com.xbaimiao.mirai.message.component.BaseComponent
-import com.xbaimiao.mirai.message.serialize.impl.TextSerializer
+import com.xbaimiao.mirai.message.serialize.ComponentSerializer
 
 class GroupMessageEvent(
     val group: Group,
@@ -12,7 +12,7 @@ class GroupMessageEvent(
     val component: BaseComponent
 ) : Event() {
 
-    val plainText = TextSerializer.serialize(component)
+    val plainText = ComponentSerializer.plainText.serialize(component)
 
     fun reply(baseComponent: BaseComponent) = group.sendMessage(baseComponent)
 

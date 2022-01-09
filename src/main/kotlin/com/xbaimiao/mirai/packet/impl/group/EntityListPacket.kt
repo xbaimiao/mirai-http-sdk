@@ -27,6 +27,4 @@ open class EntityListPacket<V>(val entityType: EntityType) :
         return this
     }
 
-    override val future = CompletableFuture<EntityListPacket<V>>()
-
 }

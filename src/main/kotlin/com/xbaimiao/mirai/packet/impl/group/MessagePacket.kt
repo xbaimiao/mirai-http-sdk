@@ -14,8 +14,6 @@ class MessagePacket(json: JsonObject, type: MessageType) : CommandPacket<Message
 
     var messageId: Int = -9999
 
-    override val future = CompletableFuture<MessagePacket>()
-
     override fun put(json: String): MessagePacket {
         val jsonObject = JsonParser.parseReader(StringReader(json)).asJsonObject.getAsJsonObject("data")
         println(json)

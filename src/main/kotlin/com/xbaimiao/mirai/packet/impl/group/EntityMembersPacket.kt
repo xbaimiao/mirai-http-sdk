@@ -21,8 +21,6 @@ class EntityMembersPacket(
 
     val friends = ArrayList<MemberFriend>()
 
-    override val future = CompletableFuture<EntityMembersPacket>()
-
     override fun put(json: String): EntityMembersPacket {
         val jsonObject = JsonParser.parseReader(StringReader(json)).asJsonObject.getAsJsonObject("data")
         jsonObject.getAsJsonArray("data").forEach {

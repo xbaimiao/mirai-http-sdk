@@ -1,12 +1,12 @@
 package com.xbaimiao.mirai.packet.impl.websocket
 
+import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.xbaimiao.mirai.MiraiHttpSDK
-import com.xbaimiao.mirai.entity.Group
-import com.xbaimiao.mirai.entity.enums.Permission
+import com.xbaimiao.mirai.entity.MemberFriend
 import com.xbaimiao.mirai.event.group.GroupMessageEvent
-import com.xbaimiao.mirai.eventbus.EventManger
-import com.xbaimiao.mirai.message.component.Component
+import com.xbaimiao.mirai.eventbus.EventChancel
+import com.xbaimiao.mirai.message.serialize.ComponentSerializer
 import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
 import java.net.http.WebSocket
@@ -50,14 +50,20 @@ class WSListener(private val webSocketBot: WebSocketBot) : WebSocket.Listener {
             }
             val syncId = jsonObject.get("syncId").asString
             if (syncId == "-1") {
+                //消息
                 val data = jsonObject.getAsJsonObject("data")
                 when (data.get("type").asString) {
                     "GroupMessage" -> {
-
+                        val memberFriend =
+                            Gson().fromJson(data.get("sender").asJsonObject, MemberFriend::class.java)
+                        val groupMessageEvent = GroupMessageEvent(
+                            memberFriend.group,
+                            memberFriend,
+                            ComponentSerializer.json.deserialize(data.get("messageChain").asJsonArray)
+                        )
+                        EventChancel.call(groupMessageEvent)
                     }
                 }
-//                EventManger.call(GroupMessageEvent(Group("1", 1, Permission.MEMBER), Component.text("1")))
-                //肯定是消息
                 return accumulatedMessage
             }
             if (syncId == "") {

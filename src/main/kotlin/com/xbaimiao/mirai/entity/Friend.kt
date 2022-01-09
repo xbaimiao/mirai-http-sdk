@@ -1,7 +1,6 @@
 package com.xbaimiao.mirai.entity
 
 import com.google.gson.Gson
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.xbaimiao.mirai.entity.MiraiMessageTransmittable.Factory.sendTo
 import com.xbaimiao.mirai.message.Message

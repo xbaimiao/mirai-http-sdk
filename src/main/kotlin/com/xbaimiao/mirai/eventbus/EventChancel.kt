@@ -3,7 +3,7 @@ package com.xbaimiao.mirai.eventbus
 import com.xbaimiao.mirai.event.Event
 import org.greenrobot.eventbus.EventBus
 
-object EventManger {
+object EventChancel {
 
     private val eventbus = EventBus.builder().sendNoSubscriberEvent(false).logNoSubscriberMessages(false).build()
 

@@ -25,7 +25,7 @@ abstract class CommandPacket<T>(
         }
     }
 
-    abstract val future: CompletableFuture<T>
+    open val future: CompletableFuture<T> = CompletableFuture<T>()
 
     override fun send(): CompletableFuture<T> {
         println(this.serializerToJson())

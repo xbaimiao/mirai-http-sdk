@@ -23,7 +23,7 @@ interface MiraiMessageTransmittable {
             type: MessageType
         ): CompletableFuture<Message> {
             val message = MessageImpl(miraiMessageTransmittable, this)
-            val jsonObject = MessageSerializer.Json.serialize(message)
+            val jsonObject = MessageSerializer.json.serialize(message)
             val packet = MessagePacket(jsonObject, type)
             val future = CompletableFuture<Message>()
             packet.send().thenAcceptAsync {

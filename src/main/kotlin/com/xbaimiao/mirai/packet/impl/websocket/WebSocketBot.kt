@@ -3,6 +3,7 @@ package com.xbaimiao.mirai.packet.impl.websocket
 import com.xbaimiao.mirai.config.WebSocketBotConfig
 import com.xbaimiao.mirai.entity.Friend
 import com.xbaimiao.mirai.entity.Group
+import com.xbaimiao.mirai.eventbus.EventChancel
 import com.xbaimiao.mirai.packet.enums.EntityType
 import com.xbaimiao.mirai.packet.impl.group.EntityListPacket
 import java.net.URI
@@ -32,6 +33,9 @@ class WebSocketBot(config: WebSocketBotConfig) {
             }
         }
     }
+
+    val eventChancel = EventChancel
+    val id = config.qq
 
     private var httpClient = HttpClient.newBuilder().connectTimeout(Duration.of(6, ChronoUnit.SECONDS)).build()
     lateinit var webSocket: WebSocket
