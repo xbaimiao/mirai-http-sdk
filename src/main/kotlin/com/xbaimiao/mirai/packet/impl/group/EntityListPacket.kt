@@ -5,7 +5,6 @@ import com.google.gson.JsonParser
 import com.xbaimiao.mirai.packet.CommandPacket
 import com.xbaimiao.mirai.packet.enums.EntityType
 import java.io.StringReader
-import java.util.concurrent.CompletableFuture
 
 /**
  * 用于获取群列表 或者 好友列表

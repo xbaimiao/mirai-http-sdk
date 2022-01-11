@@ -3,7 +3,7 @@ package com.xbaimiao.mirai.entity
 import com.xbaimiao.mirai.message.Message
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.impl.MessageImpl
-import com.xbaimiao.mirai.message.serialize.message.MessageSerializer
+import com.xbaimiao.mirai.message.serialize.MiraiSerializer
 import com.xbaimiao.mirai.packet.enums.MessageType
 import com.xbaimiao.mirai.packet.impl.group.MessagePacket
 import java.util.concurrent.CompletableFuture
@@ -23,7 +23,7 @@ interface MiraiMessageTransmittable {
             type: MessageType
         ): CompletableFuture<Message> {
             val message = MessageImpl(miraiMessageTransmittable, this)
-            val jsonObject = MessageSerializer.json.serialize(message)
+            val jsonObject = MiraiSerializer.MessageSerialize.serialize(message)
             val packet = MessagePacket(jsonObject, type)
             val future = CompletableFuture<Message>()
             packet.send().thenAcceptAsync {

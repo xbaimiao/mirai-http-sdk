@@ -2,11 +2,13 @@ package com.xbaimiao.mirai.packet.impl.websocket
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import com.xbaimiao.mirai.MiraiHttpSDK
+import com.xbaimiao.mirai.entity.Friend
 import com.xbaimiao.mirai.entity.MemberFriend
-import com.xbaimiao.mirai.event.group.GroupMessageEvent
+import com.xbaimiao.mirai.event.FriendMessageEvent
+import com.xbaimiao.mirai.event.GroupMessageEvent
+import com.xbaimiao.mirai.event.GroupTempMessageEvent
 import com.xbaimiao.mirai.eventbus.EventChancel
-import com.xbaimiao.mirai.message.serialize.component.ComponentSerializer
+import com.xbaimiao.mirai.message.serialize.MiraiSerializer
 import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
 import java.net.http.WebSocket
@@ -32,7 +34,6 @@ class WSListener : WebSocket.Listener {
 
     override fun onError(webSocket: WebSocket, error: Throwable) {
         error.printStackTrace()
-        MiraiHttpSDK.init()
     }
 
     override fun onText(webSocket: WebSocket, charSequence: CharSequence, last: Boolean): CompletionStage<*> {
@@ -59,9 +60,27 @@ class WSListener : WebSocket.Listener {
                         val groupMessageEvent = GroupMessageEvent(
                             memberFriend.group,
                             memberFriend,
-                            ComponentSerializer.json.deserialize(data.get("messageChain").asJsonArray)
+                            MiraiSerializer.ComponentSerializer.deserialize(data.get("messageChain").asJsonArray)
                         )
                         EventChancel.call(groupMessageEvent)
+                    }
+                    "TempMessage"  -> {
+                        val memberFriend =
+                            Gson().fromJson(data.get("sender").asJsonObject, MemberFriend::class.java)
+                        val groupMessageEvent = GroupTempMessageEvent(
+                            memberFriend.group,
+                            memberFriend,
+                            MiraiSerializer.ComponentSerializer.deserialize(data.get("messageChain").asJsonArray)
+                        )
+                        EventChancel.call(groupMessageEvent)
+                    }
+                    "FriendMessage" -> {
+                        val friend = Gson().fromJson(data.get("sender").asJsonObject, Friend::class.java)
+                        val friendMessageEvent = FriendMessageEvent(
+                            friend,
+                            MiraiSerializer.ComponentSerializer.deserialize(data.get("messageChain").asJsonArray)
+                        )
+                        EventChancel.call(friendMessageEvent)
                     }
                 }
                 return accumulatedMessage

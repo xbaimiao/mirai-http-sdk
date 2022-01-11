@@ -15,4 +15,8 @@ object EventChancel {
         eventbus.register(any)
     }
 
+    fun unregisterListener(any: Any) {
+        eventbus.unregister(any)
+    }
+
 }

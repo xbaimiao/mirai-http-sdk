@@ -8,7 +8,6 @@ import com.xbaimiao.mirai.entity.MemberFriend
 import com.xbaimiao.mirai.packet.CommandPacket
 import com.xbaimiao.mirai.packet.enums.EntityType
 import java.io.StringReader
-import java.util.concurrent.CompletableFuture
 
 class EntityMembersPacket(
     val group: Group
