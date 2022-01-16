@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.xbaimiao"
-version = "1.0.2-mini"
+version = "1.0.3-mini"
 
 repositories {
     mavenCentral()
@@ -22,8 +22,8 @@ tasks.withType<JavaCompile> {
 
 
 dependencies {
-    compileOnly("com.google.code.gson:gson:2.8.9")
-    compileOnly("org.greenrobot:eventbus:3.1.1")
+    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("org.greenrobot:eventbus:3.1.1")
 }
 
 configure<JavaPluginConvention> {

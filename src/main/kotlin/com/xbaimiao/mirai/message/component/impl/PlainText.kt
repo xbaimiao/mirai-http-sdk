@@ -11,6 +11,8 @@ class PlainText(
     children: List<BaseComponent> = ComponentList()
 ) : AbstractComponent(children) {
 
+    constructor(string: String) : this(string, ComponentList())
+
     override fun fromChildren(children: List<BaseComponent>) = PlainText(string, children)
 
     override fun serializeToJson(): JsonObject {

@@ -6,6 +6,7 @@ import com.xbaimiao.mirai.entity.Group
 import com.xbaimiao.mirai.eventbus.EventChancel
 import com.xbaimiao.mirai.packet.enums.EntityType
 import com.xbaimiao.mirai.packet.impl.group.EntityListPacket
+import java.net.ConnectException
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.WebSocket
@@ -56,16 +57,22 @@ class WebSocketBot(config: WebSocketBotConfig) {
     lateinit var wsListener: WSListener
 
     private var httpClient = HttpClient.newBuilder().connectTimeout(Duration.of(6, ChronoUnit.SECONDS)).build()
-    private val url = config.baseUrl.replace("http", "ws") + "all?verifyKey=${config.authKey}&qq=${config.qq}"
+    private val url = config.baseUrl.replace("http", "ws") + "all?verifyKey=${config.authKey}&qq=${id}"
 
     fun connect(): WebSocketBot {
-        webSocket =
-            httpClient.newWebSocketBuilder().buildAsync(URI(url), WSListener().also { wsListener = it }).join()
+        try {
+            webSocket =
+                httpClient.newWebSocketBuilder().buildAsync(URI(url), WSListener().also { wsListener = it }).join()
+        } catch (e: ConnectException) {
+            e.printStackTrace()
+        }
         return this
     }
 
     fun disable() {
-        webSocket.sendClose(1, "close")
+        webSocket.sendClose(1000, "close")
+        webSocket.abort()
+        wsListener.on = false
     }
 
     fun join() {

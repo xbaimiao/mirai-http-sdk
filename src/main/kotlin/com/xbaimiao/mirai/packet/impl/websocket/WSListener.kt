@@ -23,6 +23,7 @@ class WSListener : WebSocket.Listener {
     val putPackets = HashMap<Long, CommandPacket<*>>()
     var buffer = StringBuilder()
     private val accumulatedMessage = CompletableFuture<Any>()
+    var on = true
 
     override fun onOpen(webSocket: WebSocket) {
         webSocket.request(1)
@@ -37,6 +38,9 @@ class WSListener : WebSocket.Listener {
     }
 
     override fun onText(webSocket: WebSocket, charSequence: CharSequence, last: Boolean): CompletionStage<*> {
+        if (!on) {
+            return accumulatedMessage
+        }
         buffer.append(charSequence)
         webSocket.request(1)
         if (!last) {
@@ -64,7 +68,7 @@ class WSListener : WebSocket.Listener {
                         )
                         EventChancel.call(groupMessageEvent)
                     }
-                    "TempMessage"  -> {
+                    "TempMessage" -> {
                         val memberFriend =
                             Gson().fromJson(data.get("sender").asJsonObject, MemberFriend::class.java)
                         val groupMessageEvent = GroupTempMessageEvent(

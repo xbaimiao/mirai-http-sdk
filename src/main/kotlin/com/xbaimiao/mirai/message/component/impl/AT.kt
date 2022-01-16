@@ -12,6 +12,8 @@ class At(
     children: List<BaseComponent> = ComponentList()
 ) : AbstractComponent(children) {
 
+    constructor(target: Long, display: String) : this(target, display, ComponentList())
+
     override fun fromChildren(children: List<BaseComponent>): BaseComponent = At(target, display, children)
 
     override fun serializeToJson(): JsonObject {

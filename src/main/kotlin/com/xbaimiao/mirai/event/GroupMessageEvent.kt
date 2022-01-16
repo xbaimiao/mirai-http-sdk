@@ -8,7 +8,7 @@ import com.xbaimiao.mirai.message.serialize.MiraiSerializer
 
 open class GroupMessageEvent(
     val group: Group,
-    sender: MemberFriend,
+    override val sender: MemberFriend,
     component: BaseComponent
 ) : MessageEvent(sender, component) {
 

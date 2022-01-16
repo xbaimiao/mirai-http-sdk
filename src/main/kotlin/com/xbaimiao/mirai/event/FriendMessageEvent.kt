@@ -4,7 +4,7 @@ import com.xbaimiao.mirai.entity.Friend
 import com.xbaimiao.mirai.message.component.BaseComponent
 
 class FriendMessageEvent(
-    friend: Friend,
+    override val sender: Friend,
     component: BaseComponent
-) : MessageEvent(friend, component) {
+) : MessageEvent(sender, component) {
 }

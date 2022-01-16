@@ -12,6 +12,8 @@ class Emoji(
     children: List<BaseComponent> = ComponentList()
 ) : AbstractComponent(children) {
 
+    constructor(emojiId: Int, name: String) : this(emojiId, name, ComponentList())
+
     override fun fromChildren(children: List<BaseComponent>): BaseComponent =
         Emoji(emojiId, name, children)
 
