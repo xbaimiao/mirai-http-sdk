@@ -2,7 +2,6 @@ package com.xbaimiao.mirai.eventbus
 
 import com.xbaimiao.mirai.event.Cancellable
 import com.xbaimiao.mirai.event.Event
-import kotlin.collections.LinkedHashMap
 
 object EventChancel {
 
@@ -11,10 +10,8 @@ object EventChancel {
     fun call(event: Event) {
         for (listenerExecute in listenerMap.filter { event::class.java == it.method.parameters[0].type }
             .sortedBy { it.subscribeHandler.priority }) {
-            if (event is Cancellable) {
-                if (listenerExecute.subscribeHandler.ignoreCancelled && event.cancelled) {
-                    continue
-                }
+            if (event is Cancellable && listenerExecute.subscribeHandler.ignoreCancelled && event.cancelled) {
+                continue
             }
             listenerExecute.execute(event)
         }
@@ -23,8 +20,13 @@ object EventChancel {
     fun registerSubscribeListener(listener: SubscribeListener) {
         val clazz = listener::class.java
         for (declaredMethod in clazz.declaredMethods) {
-            val subscribeHandler = declaredMethod.getAnnotation(SubscribeHandler::class.java) ?: continue
-            listenerMap.add(SubscribeListenerExecute(listener, declaredMethod, subscribeHandler))
+            listenerMap.add(
+                SubscribeListenerExecute(
+                    listener,
+                    declaredMethod,
+                    declaredMethod.getAnnotation(SubscribeHandler::class.java) ?: continue
+                )
+            )
         }
     }
 
