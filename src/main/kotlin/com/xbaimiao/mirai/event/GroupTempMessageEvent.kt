@@ -6,7 +6,7 @@ import com.xbaimiao.mirai.message.component.BaseComponent
 
 class GroupTempMessageEvent(
     group: Group,
-    sender: MemberFriend,
+    override val sender: MemberFriend,
     component: BaseComponent
 ) : GroupMessageEvent(
     group, sender, component

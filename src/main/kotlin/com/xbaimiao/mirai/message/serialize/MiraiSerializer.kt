@@ -43,15 +43,15 @@ sealed interface MiraiSerializer<I, O> {
             var component: BaseComponent = PlainText("")
             value.map { it.asJsonObject }.forEach {
                 when (ComponentType.formKey(it.get("type").asString)) {
-                    ComponentType.SOURCE -> {}
                     ComponentType.PLAIN -> component += PlainText(it.get("text").asString)
                     ComponentType.IMAGE -> component += Image(it)
                     ComponentType.AT -> component += At(it.get("target").asLong, it.get("display").asString)
                     ComponentType.FACE -> component += Emoji(it.get("faceId").asInt, it.get("name").asString)
-                    ComponentType.NULL -> {}
                     ComponentType.AT_ALL -> component += AtAll()
-                    ComponentType.FLASH_IMAGE -> TODO()
-                    ComponentType.VOICE -> TODO()
+                    ComponentType.FLASH_IMAGE -> {}
+                    ComponentType.VOICE -> {}
+                    ComponentType.SOURCE -> {}
+                    ComponentType.NULL -> {}
                 }
             }
             return component

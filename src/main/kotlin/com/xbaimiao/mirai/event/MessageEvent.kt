@@ -5,7 +5,7 @@ import com.xbaimiao.mirai.eventbus.EventChancel
 import com.xbaimiao.mirai.message.component.BaseComponent
 
 abstract class MessageEvent(
-    val sender: MiraiMessageTransmittable,
+    open val sender: MiraiMessageTransmittable,
     val component: BaseComponent
 ) : Event(), Cancellable {
     override var cancelled: Boolean = false
