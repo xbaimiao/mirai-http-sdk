@@ -24,7 +24,7 @@ tasks.withType<JavaCompile> {
 
 
 dependencies {
-    compileOnly("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.8.9")
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
