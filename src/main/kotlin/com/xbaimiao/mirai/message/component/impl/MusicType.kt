@@ -16,5 +16,16 @@ enum class MusicType(music: String) {
             }
             return "NeteaseCloudMusic"
         }
+
+        fun StringToMusicType(type: String): MusicType {
+            if (type.equals("NeteaseCloudMusic")) {
+                return Netease;
+            } else if (type.equals("QQMusic")) {
+                return QQ;
+            } else if (type.equals("KugouMusic")) {
+                return Kugou;
+            }
+            return Netease;
+        }
     }
 }

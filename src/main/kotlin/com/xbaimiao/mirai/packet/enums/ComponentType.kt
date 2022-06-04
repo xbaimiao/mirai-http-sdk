@@ -11,6 +11,12 @@ enum class ComponentType(
     FACE("Face"),
     FLASH_IMAGE("FlashImage"),
     VOICE("Voice"),
+    MUSIC("MusicShare"),
+    QUOTE("Quote"),
+    POKE("Poke"),
+    DICE("Dice"),
+    JSON("Json"),
+    MIRAI("MiraiCode"),
     NULL("null");
 
     companion object {

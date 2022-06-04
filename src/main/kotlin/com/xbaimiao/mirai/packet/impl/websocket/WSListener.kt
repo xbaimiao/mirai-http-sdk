@@ -59,6 +59,7 @@ class WSListener : WebSocket.Listener {
                 val data = jsonObject.getAsJsonObject("data")
                 when (data.get("type").asString) {
                     "GroupMessage" -> {
+                        println(data)
                         val memberFriend =
                             Gson().fromJson(data.get("sender").asJsonObject, MemberFriend::class.java)
                         val groupMessageEvent = GroupMessageEvent(
