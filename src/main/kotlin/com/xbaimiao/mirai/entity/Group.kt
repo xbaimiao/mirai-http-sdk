@@ -9,7 +9,7 @@ import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.component.Component
 import com.xbaimiao.mirai.packet.enums.MessageType
 import com.xbaimiao.mirai.packet.impl.group.EntityMembersPacket
-import com.xbaimiao.mirai.packet.impl.group.MuteMemberFriendPacket
+import com.xbaimiao.mirai.packet.impl.group.GetMemberInfoPacket
 import java.util.concurrent.CompletableFuture
 
 class Group(
@@ -36,6 +36,14 @@ class Group(
                 this.complete(it.friends)
             }
         }
+    }
+
+    fun getMember(memberId: Long): CompletableFuture<MemberFriend?> {
+        val future = CompletableFuture<MemberFriend?>()
+        GetMemberInfoPacket(this.id, memberId).send().thenAcceptAsync {
+            future.complete(it.memberFriend)
+        }
+        return future
     }
 
     override fun sendMessage(component: BaseComponent): CompletableFuture<Message> {
