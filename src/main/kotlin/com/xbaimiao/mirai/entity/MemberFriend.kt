@@ -42,8 +42,12 @@ class MemberFriend(
     val group: Group
 ) : Friend(id, nickName, "") {
 
-    override fun sendMessage(component: BaseComponent): CompletableFuture<Message> {
+    override fun quoteMessage(component: BaseComponent): CompletableFuture<Message> {
         return component.sendTo(this, MessageType.TEMP)
+    }
+
+    override fun quoteMessage(component: BaseComponent, quote: String): CompletableFuture<Message> {
+        return component.sendTo(this, MessageType.TEMP, quote)
     }
 
     override fun toString(): String {

@@ -27,7 +27,7 @@ sealed interface MiraiSerializer<I, O> {
                 jsonObject.addProperty("target", value.target.id)
             }
             val jsonArray = JsonArray()
-            value.component.toList().map{
+            value.component.toList().map {
                 it.serializeToJson()
             }.forEach(jsonArray::add)
             jsonObject.add("messageChain", jsonArray)
@@ -50,33 +50,47 @@ sealed interface MiraiSerializer<I, O> {
                     ComponentType.AT -> component += At(it.get("target").asLong, it.get("display").asString)
                     ComponentType.FACE -> component += Emoji(it.get("faceId").asInt, it.get("name").asString)
                     ComponentType.AT_ALL -> component += AtAll()
-                    ComponentType.MUSIC -> component += Music(MusicType.StringToMusicType(it.get("kind").asString),it.get("title").asString,it.get("summary").asString,it.get("jumpUrl").asString,it.get("pictureUrl").asString,it.get("musicUrl").asString,it.get("brief").asString)
-                    ComponentType.QUOTE -> component += Quote(it.get("id").asInt,it.get("groupId").asLong,it.get("senderId").asLong,it.get("targetId").asLong,it.get("origin").asJsonArray)
+                    ComponentType.MUSIC -> component += Music(
+                        MusicType.StringToMusicType(it.get("kind").asString),
+                        it.get("title").asString,
+                        it.get("summary").asString,
+                        it.get("jumpUrl").asString,
+                        it.get("pictureUrl").asString,
+                        it.get("musicUrl").asString,
+                        it.get("brief").asString
+                    )
+                    ComponentType.QUOTE -> component += Quote(
+                        it.get("id").asInt,
+                        it.get("groupId").asLong,
+                        it.get("senderId").asLong,
+                        it.get("targetId").asLong,
+                        it.get("origin").asJsonArray
+                    )
                     ComponentType.FLASH_IMAGE -> {
                         var imageId = ""
-                        if (!it.get("imageId").isJsonNull){
+                        if (!it.get("imageId").isJsonNull) {
                             imageId = it.get("imageId").asString
                         }
                         var url = ""
-                        if (!it.get("url").isJsonNull){
+                        if (!it.get("url").isJsonNull) {
                             url = it.get("url").asString;
                         }
                         var base64 = ""
-                        if (!it.get("base64").isJsonNull){
+                        if (!it.get("base64").isJsonNull) {
                             base64 = it.get("base64").asString
                         }
-                        component += FlashImage(imageId,url, base64)
+                        component += FlashImage(imageId, url, base64)
                     }
                     ComponentType.VOICE -> {
                         var base64 = ""
                         var voiceId = ""
-                        if (!it.get("base64").isJsonNull){
+                        if (!it.get("base64").isJsonNull) {
                             base64 = it.get("base64").asString;
                         }
-                        if (!it.get("voiceId").isJsonNull){
+                        if (!it.get("voiceId").isJsonNull) {
                             voiceId = it.get("voiceId").asString
                         }
-                        component += Voice(voiceId,it.get("url").asString,base64,it.get("length").asLong)
+                        component += Voice(voiceId, it.get("url").asString, base64, it.get("length").asLong)
                     }
                     ComponentType.POKE -> component += Poke(PokeType.StringToType(it.get("name").asString))
                     ComponentType.MIRAI -> component += MiraiCode(it.get("code").asString)

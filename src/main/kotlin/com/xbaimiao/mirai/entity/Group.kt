@@ -7,7 +7,6 @@ import com.xbaimiao.mirai.entity.enums.Permission
 import com.xbaimiao.mirai.message.Message
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.component.Component
-import com.xbaimiao.mirai.message.component.impl.PlainText
 import com.xbaimiao.mirai.packet.enums.MessageType
 import com.xbaimiao.mirai.packet.impl.group.EntityMembersPacket
 import java.util.concurrent.CompletableFuture
@@ -28,17 +27,7 @@ class Group(
      */
     @SerializedName("permission")
     val permission: Permission
-) : MiraiMessageTransmittable, MiraiNumberIdentifiable<Long> {
-
-    companion object Factory : MiraiNumberQueryable<Group> {
-        override fun fromId(id: Long): Group {
-            TODO("Not yet implemented")
-        }
-
-        override fun fromIdOrNull(id: Long): Group? {
-            TODO("Not yet implemented")
-        }
-    }
+) : MiraiMessageTransmittable {
 
     fun getMembers(): CompletableFuture<List<MemberFriend>> {
         return CompletableFuture<List<MemberFriend>>().apply {
@@ -48,12 +37,16 @@ class Group(
         }
     }
 
-    override fun sendMessage(component: BaseComponent): CompletableFuture<Message> {
+    override fun quoteMessage(component: BaseComponent): CompletableFuture<Message> {
         return component.sendTo(this, MessageType.GROUP)
     }
 
+    override fun quoteMessage(component: BaseComponent, quote: String): CompletableFuture<Message> {
+        return component.sendTo(this, MessageType.GROUP, quote)
+    }
+
     fun sendMessage(string: String): CompletableFuture<Message> {
-        return sendMessage(Component.text(string))
+        return quoteMessage(Component.text(string))
     }
 
     override fun toString(): String {

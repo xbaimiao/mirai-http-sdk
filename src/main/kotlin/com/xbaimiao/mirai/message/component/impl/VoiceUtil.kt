@@ -1,7 +1,6 @@
 package com.xbaimiao.mirai.message.component.impl
 
 import java.io.File
-import kotlin.Throws
 import java.io.IOException
 import java.io.RandomAccessFile
 

@@ -1,6 +1,7 @@
 package com.xbaimiao.mirai.packet.impl.websocket
 
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import com.xbaimiao.mirai.entity.Friend
 import com.xbaimiao.mirai.entity.MemberFriend
@@ -8,6 +9,7 @@ import com.xbaimiao.mirai.event.FriendMessageEvent
 import com.xbaimiao.mirai.event.GroupMessageEvent
 import com.xbaimiao.mirai.event.GroupTempMessageEvent
 import com.xbaimiao.mirai.eventbus.EventChancel
+import com.xbaimiao.mirai.message.MessageSource
 import com.xbaimiao.mirai.message.serialize.MiraiSerializer
 import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
@@ -18,18 +20,19 @@ import java.util.concurrent.CompletionStage
 /**
  * 监听器
  */
-class WSListener : WebSocket.Listener {
+class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
 
     val putPackets = HashMap<Long, CommandPacket<*>>()
     var buffer = StringBuilder()
     private val accumulatedMessage = CompletableFuture<Any>()
-    var on = true
+    internal var on = true
 
     override fun onOpen(webSocket: WebSocket) {
         webSocket.request(1)
     }
 
     override fun onClose(webSocket: WebSocket?, statusCode: Int, reason: String?): CompletionStage<*>? {
+        bot.closeFunc.forEach { it.invoke(bot) }
         return null
     }
 
@@ -59,12 +62,12 @@ class WSListener : WebSocket.Listener {
                 val data = jsonObject.getAsJsonObject("data")
                 when (data.get("type").asString) {
                     "GroupMessage" -> {
-                        println(data)
                         val memberFriend =
                             Gson().fromJson(data.get("sender").asJsonObject, MemberFriend::class.java)
                         val groupMessageEvent = GroupMessageEvent(
                             memberFriend.group,
                             memberFriend,
+                            data.get("messageChain").asJsonArray.toSource(),
                             MiraiSerializer.ComponentSerializer.deserialize(data.get("messageChain").asJsonArray)
                         )
                         EventChancel.call(groupMessageEvent)
@@ -75,6 +78,7 @@ class WSListener : WebSocket.Listener {
                         val groupMessageEvent = GroupTempMessageEvent(
                             memberFriend.group,
                             memberFriend,
+                            data.get("messageChain").asJsonArray.toSource(),
                             MiraiSerializer.ComponentSerializer.deserialize(data.get("messageChain").asJsonArray)
                         )
                         EventChancel.call(groupMessageEvent)
@@ -83,6 +87,7 @@ class WSListener : WebSocket.Listener {
                         val friend = Gson().fromJson(data.get("sender").asJsonObject, Friend::class.java)
                         val friendMessageEvent = FriendMessageEvent(
                             friend,
+                            data.get("messageChain").asJsonArray.toSource(),
                             MiraiSerializer.ComponentSerializer.deserialize(data.get("messageChain").asJsonArray)
                         )
                         EventChancel.call(friendMessageEvent)
@@ -105,6 +110,15 @@ class WSListener : WebSocket.Listener {
             e.printStackTrace()
         }
         return accumulatedMessage
+    }
+
+    fun JsonArray.toSource(): MessageSource {
+        for (it in this) {
+            if (it.asJsonObject.get("type").asString == "Source") {
+                return Gson().fromJson(it, MessageSource::class.java)
+            }
+        }
+        return MessageSource(-1, -1)
     }
 
 }

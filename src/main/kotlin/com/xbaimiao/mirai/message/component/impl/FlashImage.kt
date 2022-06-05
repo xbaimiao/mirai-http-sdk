@@ -5,10 +5,6 @@ import com.google.gson.JsonObject
 import com.xbaimiao.mirai.message.component.AbstractComponent
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.component.collections.ComponentList
-import com.xbaimiao.mirai.packet.enums.ComponentType
-import java.io.File
-import java.net.URL
-import java.util.Objects
 
 class FlashImage(
     val imageId: String,
@@ -17,27 +13,27 @@ class FlashImage(
     children: List<BaseComponent> = ComponentList()
 ) : AbstractComponent(children) {
 
-    constructor(imageId: String,url: String,base64: String) : this(imageId, url, base64, ComponentList())
+    constructor(imageId: String, url: String, base64: String) : this(imageId, url, base64, ComponentList())
 
-    override fun fromChildren(children: List<BaseComponent>) = FlashImage(imageId, url, base64,children)
+    override fun fromChildren(children: List<BaseComponent>) = FlashImage(imageId, url, base64, children)
 
     override fun serializeToJson(): JsonObject {
         return JsonObject().apply {
             addProperty("type", "FlashImage")
-            if (imageId==""){
-                add("imageId",JsonNull.INSTANCE)
+            if (imageId == "") {
+                add("imageId", JsonNull.INSTANCE)
             } else {
-                addProperty("imageId",imageId)
+                addProperty("imageId", imageId)
             }
-            if (url==""){
-                add("url",JsonNull.INSTANCE)
+            if (url == "") {
+                add("url", JsonNull.INSTANCE)
             } else {
-                addProperty("url",url)
+                addProperty("url", url)
             }
-            if (base64==""){
-                add("base64",JsonNull.INSTANCE)
+            if (base64 == "") {
+                add("base64", JsonNull.INSTANCE)
             } else {
-                addProperty("base64",base64)
+                addProperty("base64", base64)
             }
         }
     }

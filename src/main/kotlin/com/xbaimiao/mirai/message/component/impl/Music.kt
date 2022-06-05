@@ -4,7 +4,6 @@ import com.google.gson.JsonObject
 import com.xbaimiao.mirai.message.component.AbstractComponent
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.component.collections.ComponentList
-import com.xbaimiao.mirai.packet.enums.ComponentType
 
 class Music(
     val type: MusicType,
@@ -17,9 +16,18 @@ class Music(
     children: List<BaseComponent> = ComponentList()
 ) : AbstractComponent(children) {
 
-    constructor(type: MusicType,title: String,summary: String,jumpUrl: String,pictureUrl: String,musicUrl: String,brief: String) : this(type,title,summary,jumpUrl,pictureUrl,musicUrl,brief, ComponentList())
+    constructor(
+        type: MusicType,
+        title: String,
+        summary: String,
+        jumpUrl: String,
+        pictureUrl: String,
+        musicUrl: String,
+        brief: String
+    ) : this(type, title, summary, jumpUrl, pictureUrl, musicUrl, brief, ComponentList())
 
-    override fun fromChildren(children: List<BaseComponent>) = Music(type,title,summary,jumpUrl,pictureUrl,musicUrl,brief,children)
+    override fun fromChildren(children: List<BaseComponent>) =
+        Music(type, title, summary, jumpUrl, pictureUrl, musicUrl, brief, children)
 
     override fun serializeToJson(): JsonObject {
         return JsonObject().apply {
@@ -29,8 +37,8 @@ class Music(
             addProperty("summary", summary)
             addProperty("jumpUrl", jumpUrl)
             addProperty("pictureUrl", pictureUrl)
-            addProperty("musicUrl",musicUrl)
-            addProperty("brief",brief)
+            addProperty("musicUrl", musicUrl)
+            addProperty("brief", brief)
         }
     }
 

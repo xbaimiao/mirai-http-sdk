@@ -1,7 +1,5 @@
 package com.xbaimiao.mirai.message.component.impl
 
-import com.xbaimiao.mirai.message.component.impl.MusicType
-
 enum class MusicType(music: String) {
     Netease("NeteaseCloudMusic"), QQ("QQMusic"), Kugou("KugouMusic");
 

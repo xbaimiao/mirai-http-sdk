@@ -53,8 +53,11 @@ class WebSocketBot(config: WebSocketBotConfig) {
     var friendCache = arrayListOf<Friend>()
     val eventChancel = EventChancel
     val id = config.qq
-    lateinit var webSocket: WebSocket
-    lateinit var wsListener: WSListener
+
+    internal val closeFunc = ArrayList<WebSocketBot.() -> Unit>()
+    internal var safeShutdown = false
+    internal lateinit var webSocket: WebSocket
+    internal lateinit var wsListener: WSListener
 
     private var httpClient = HttpClient.newBuilder().connectTimeout(Duration.of(6, ChronoUnit.SECONDS)).build()
     private val url = config.baseUrl.replace("http", "ws") + "all?verifyKey=${config.authKey}&qq=${id}"
@@ -62,17 +65,45 @@ class WebSocketBot(config: WebSocketBotConfig) {
     fun connect(): WebSocketBot {
         try {
             webSocket =
-                httpClient.newWebSocketBuilder().buildAsync(URI(url), WSListener().also { wsListener = it }).join()
+                httpClient.newWebSocketBuilder().buildAsync(URI(url), WSListener(this).also { wsListener = it }).join()
         } catch (e: ConnectException) {
             e.printStackTrace()
         }
         return this
     }
 
+    /**
+     * 安全关闭机器人 此方法关闭不会调用自动重新连接的方法
+     */
     fun disable() {
+        safeShutdown = true
         webSocket.sendClose(1000, "close")
         webSocket.abort()
         wsListener.on = false
+    }
+
+    /**
+     * 自动重新连接
+     */
+    fun autoReconnect(delay: Int) {
+        onClose {
+            Thread {
+                if (safeShutdown) {
+                    return@Thread
+                }
+                println("Bot closed $delay seconds later will reconnect")
+                Thread.sleep(delay * 1000L)
+                connect()
+                println("Bot Connected!")
+            }.start()
+        }
+    }
+
+    /**
+     * 关闭事件
+     */
+    fun onClose(func: WebSocketBot.() -> Unit) {
+        closeFunc.add(func)
     }
 
     fun join() {

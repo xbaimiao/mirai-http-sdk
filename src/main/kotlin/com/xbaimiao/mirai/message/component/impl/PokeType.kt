@@ -1,7 +1,5 @@
 package com.xbaimiao.mirai.message.component.impl
 
-import com.xbaimiao.mirai.message.component.impl.PokeType
-
 enum class PokeType(poke: String) {
     Poke("Poke"), ShowLove("ShowLove"), Like("Like"), Heartbroken("Heartbroken"), SixSixSix("SixSixSix"), FangDaZhao("FangDaZhao");
 

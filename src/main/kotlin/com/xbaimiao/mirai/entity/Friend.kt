@@ -26,8 +26,12 @@ open class Friend(
     val remark: String
 ) : MiraiMessageTransmittable {
 
-    override fun sendMessage(component: BaseComponent): CompletableFuture<Message> {
+    override fun quoteMessage(component: BaseComponent): CompletableFuture<Message> {
         return component.sendTo(this, MessageType.FRIEND)
+    }
+
+    override fun quoteMessage(component: BaseComponent, quote: String): CompletableFuture<Message> {
+        return component.sendTo(this, MessageType.FRIEND, quote)
     }
 
     override fun toString(): String {

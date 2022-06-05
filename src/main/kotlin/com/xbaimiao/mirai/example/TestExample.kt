@@ -1,29 +1,31 @@
 package com.xbaimiao.mirai.example
 
-import com.google.gson.JsonParser
 import com.xbaimiao.mirai.config.WebSocketBotConfig
 import com.xbaimiao.mirai.event.GroupMessageEvent
-import com.xbaimiao.mirai.eventbus.SubscribeHandler
-import com.xbaimiao.mirai.eventbus.SubscribeListener
-import com.xbaimiao.mirai.eventbus.SubscribePriority
-import com.xbaimiao.mirai.message.component.BaseComponent
-import com.xbaimiao.mirai.message.component.impl.Music
-import com.xbaimiao.mirai.message.component.impl.MusicType
-import com.xbaimiao.mirai.message.serialize.MiraiSerializer
+import com.xbaimiao.mirai.message.component.Component
 import com.xbaimiao.mirai.packet.impl.websocket.WebSocketBot
 
 private lateinit var bot: WebSocketBot
 
 fun main() {
-    val webSocketBotConfig = WebSocketBotConfig("http://localhost:8080/", 1000000, "AUTHKEY")
+    val webSocketBotConfig = WebSocketBotConfig("http://run.xbaimiao.com:8099/", 2157207381, "INITKEYCgTu5Bcx")
     bot = WebSocketBot(webSocketBotConfig).connect()
     bot.join()
-    bot.eventChancel.registerSubscribeListener(object : SubscribeListener {
-        @SubscribeHandler(priority = SubscribePriority.NORMAL)
-        fun groupMessageEvent(event: GroupMessageEvent) {
-            event.group.sendMessage(Music(MusicType.QQ,"Test","Powered by FlyProject","https://localhost","http://y.gtimg.cn/music/photo_new/T002R300x300M000001MyK3Y47zLur.jpg","https://loaclhost/test.mp3","[测试] 测试"))
+//    bot.getGroups().thenAcceptAsync { groups ->
+//        for (group in groups) {
+//            if (group.id == 777905589L) {
+//                val message = group.sendMessage("你好")
+//                message.thenAcceptAsync {
+//                    group.sendMessage(Component.text("回复自己"), "${it.messageId}")
+//                }
+//            }
+//        }
+//    }
+    bot.eventChancel.subscribe<GroupMessageEvent> {
+        if (plainText == "回复我") {
+            group.quoteMessage(Component.text("好"), "${this.messageSource.messageId}")
         }
-    })
+    }
 }
 
 

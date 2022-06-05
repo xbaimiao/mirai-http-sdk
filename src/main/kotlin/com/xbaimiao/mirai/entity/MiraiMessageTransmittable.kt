@@ -15,15 +15,25 @@ interface MiraiMessageTransmittable {
     /**
      * 发送消息
      */
-    fun sendMessage(component: BaseComponent): CompletableFuture<Message>
+    fun quoteMessage(component: BaseComponent): CompletableFuture<Message>
+
+    /**
+     * 回复消息
+     */
+    fun quoteMessage(component: BaseComponent, quote: String): CompletableFuture<Message>
 
     companion object Factory {
         internal fun BaseComponent.sendTo(
             miraiMessageTransmittable: MiraiMessageTransmittable,
-            type: MessageType
+            type: MessageType,
+            quote: String? = null
         ): CompletableFuture<Message> {
             val message = MessageImpl(miraiMessageTransmittable, this)
+
             val jsonObject = MiraiSerializer.MessageSerialize.serialize(message)
+            if (quote != null) {
+                jsonObject.addProperty("quote", quote)
+            }
             val packet = MessagePacket(jsonObject, type)
             val future = CompletableFuture<Message>()
             packet.send().thenAcceptAsync {
