@@ -59,13 +59,6 @@ sealed interface MiraiSerializer<I, O> {
                         it.get("musicUrl").asString,
                         it.get("brief").asString
                     )
-                    ComponentType.QUOTE -> component += Quote(
-                        it.get("id").asInt,
-                        it.get("groupId").asLong,
-                        it.get("senderId").asLong,
-                        it.get("targetId").asLong,
-                        it.get("origin").asJsonArray
-                    )
                     ComponentType.FLASH_IMAGE -> {
                         var imageId = ""
                         if (!it.get("imageId").isJsonNull) {

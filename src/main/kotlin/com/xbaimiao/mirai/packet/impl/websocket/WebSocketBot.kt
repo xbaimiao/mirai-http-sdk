@@ -1,6 +1,5 @@
 package com.xbaimiao.mirai.packet.impl.websocket
 
-import com.xbaimiao.mirai.config.WebSocketBotConfig
 import com.xbaimiao.mirai.entity.Friend
 import com.xbaimiao.mirai.entity.Group
 import com.xbaimiao.mirai.eventbus.EventChancel
@@ -17,7 +16,7 @@ import java.util.concurrent.CompletableFuture
 /**
  * 绑定WebSocket 监听事件
  */
-class WebSocketBot(config: WebSocketBotConfig) {
+class WebSocketBot(config: WsInfo) {
 
     companion object {
         lateinit var bot: WebSocketBot
@@ -49,23 +48,25 @@ class WebSocketBot(config: WebSocketBotConfig) {
         return groupCache.firstOrNull { it.id == id }
     }
 
-    var groupCache = arrayListOf<Group>()
-    var friendCache = arrayListOf<Friend>()
     val eventChancel = EventChancel
     val id = config.qq
 
     internal val closeFunc = ArrayList<WebSocketBot.() -> Unit>()
-    internal var safeShutdown = false
     internal lateinit var webSocket: WebSocket
     internal lateinit var wsListener: WSListener
 
+    private var safeShutdown = false
     private var httpClient = HttpClient.newBuilder().connectTimeout(Duration.of(6, ChronoUnit.SECONDS)).build()
     private val url = config.baseUrl.replace("http", "ws") + "all?verifyKey=${config.authKey}&qq=${id}"
+    var groupCache = arrayListOf<Group>()
+    var friendCache = arrayListOf<Friend>()
 
     fun connect(): WebSocketBot {
         try {
             webSocket =
                 httpClient.newWebSocketBuilder().buildAsync(URI(url), WSListener(this).also { wsListener = it }).join()
+            getGroups()
+            getFriends()
         } catch (e: ConnectException) {
             e.printStackTrace()
         }

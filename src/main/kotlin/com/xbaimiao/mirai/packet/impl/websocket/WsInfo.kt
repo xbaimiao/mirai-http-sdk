@@ -1,6 +1,6 @@
-package com.xbaimiao.mirai.config
+package com.xbaimiao.mirai.packet.impl.websocket
 
-open class WebSocketBotConfig(
+open class WsInfo(
     val baseUrl: String,
     val qq: Long,
     val authKey: String

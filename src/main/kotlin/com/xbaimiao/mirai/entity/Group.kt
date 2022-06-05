@@ -9,6 +9,7 @@ import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.component.Component
 import com.xbaimiao.mirai.packet.enums.MessageType
 import com.xbaimiao.mirai.packet.impl.group.EntityMembersPacket
+import com.xbaimiao.mirai.packet.impl.group.MuteMemberFriendPacket
 import java.util.concurrent.CompletableFuture
 
 class Group(
@@ -37,7 +38,7 @@ class Group(
         }
     }
 
-    override fun quoteMessage(component: BaseComponent): CompletableFuture<Message> {
+    override fun sendMessage(component: BaseComponent): CompletableFuture<Message> {
         return component.sendTo(this, MessageType.GROUP)
     }
 
@@ -46,7 +47,7 @@ class Group(
     }
 
     fun sendMessage(string: String): CompletableFuture<Message> {
-        return quoteMessage(Component.text(string))
+        return sendMessage(Component.text(string))
     }
 
     override fun toString(): String {

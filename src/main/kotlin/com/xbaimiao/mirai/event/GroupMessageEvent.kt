@@ -16,8 +16,8 @@ open class GroupMessageEvent(
 
     val plainText = MiraiSerializer.ComponentText.serialize(component)
 
-    fun reply(baseComponent: BaseComponent) = group.quoteMessage(baseComponent)
+    fun reply(baseComponent: BaseComponent) = group.sendMessage(baseComponent)
 
-    fun reply(string: String) = group.quoteMessage(Component.text(string))
+    fun reply(string: String) = group.sendMessage(Component.text(string))
 
 }

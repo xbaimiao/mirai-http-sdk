@@ -7,6 +7,8 @@ import com.xbaimiao.mirai.entity.enums.Permission
 import com.xbaimiao.mirai.message.Message
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.packet.enums.MessageType
+import com.xbaimiao.mirai.packet.impl.group.MuteMemberFriendPacket
+import com.xbaimiao.mirai.packet.impl.group.UnMuteMemberFriendPacket
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -42,8 +44,24 @@ class MemberFriend(
     val group: Group
 ) : Friend(id, nickName, "") {
 
-    override fun quoteMessage(component: BaseComponent): CompletableFuture<Message> {
+    override fun sendMessage(component: BaseComponent): CompletableFuture<Message> {
         return component.sendTo(this, MessageType.TEMP)
+    }
+
+    fun mute(time: Int): CompletableFuture<MuteMemberFriendPacket.Result> {
+        val future = CompletableFuture<MuteMemberFriendPacket.Result>()
+        MuteMemberFriendPacket(id, group.id, time).send().thenApplyAsync {
+            future.complete(it.result)
+        }
+        return future
+    }
+
+    fun unmute(): CompletableFuture<UnMuteMemberFriendPacket.Result> {
+        val future = CompletableFuture<UnMuteMemberFriendPacket.Result>()
+        UnMuteMemberFriendPacket(id, group.id).send().thenApplyAsync {
+            future.complete(it.result)
+        }
+        return future
     }
 
     override fun quoteMessage(component: BaseComponent, quote: String): CompletableFuture<Message> {

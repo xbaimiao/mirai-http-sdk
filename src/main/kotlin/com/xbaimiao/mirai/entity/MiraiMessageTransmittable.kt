@@ -15,7 +15,7 @@ interface MiraiMessageTransmittable {
     /**
      * 发送消息
      */
-    fun quoteMessage(component: BaseComponent): CompletableFuture<Message>
+    fun sendMessage(component: BaseComponent): CompletableFuture<Message>
 
     /**
      * 回复消息
