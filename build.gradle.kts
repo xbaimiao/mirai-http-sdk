@@ -11,7 +11,7 @@ version = "1.0.3-beta"
 
 repositories {
     mavenCentral()
-    maven(url = uri("https://run.xbaimiao.com/nexus/repository/maven-releases/"))
+    maven(url = uri("https://run.xbaimiao.com/releases/"))
 }
 
 java {
@@ -48,7 +48,7 @@ configure<JavaPluginConvention> {
 
 publishing {
     repositories {
-        maven("https://run.xbaimiao.com/nexus/repository/maven-releases/") {
+        maven("https://run.xbaimiao.com/releases/") {
             credentials {
                 username = project.findProperty("user").toString()
                 password = project.findProperty("password").toString()

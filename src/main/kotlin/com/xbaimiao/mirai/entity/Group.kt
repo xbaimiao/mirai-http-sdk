@@ -6,6 +6,8 @@ import com.xbaimiao.mirai.entity.MiraiMessageTransmittable.Factory.sendTo
 import com.xbaimiao.mirai.entity.enums.Permission
 import com.xbaimiao.mirai.message.Message
 import com.xbaimiao.mirai.message.component.BaseComponent
+import com.xbaimiao.mirai.message.component.Component
+import com.xbaimiao.mirai.message.component.impl.PlainText
 import com.xbaimiao.mirai.packet.enums.MessageType
 import com.xbaimiao.mirai.packet.impl.group.EntityMembersPacket
 import java.util.concurrent.CompletableFuture
@@ -48,6 +50,10 @@ class Group(
 
     override fun sendMessage(component: BaseComponent): CompletableFuture<Message> {
         return component.sendTo(this, MessageType.GROUP)
+    }
+
+    fun sendMessage(string: String): CompletableFuture<Message> {
+        return sendMessage(Component.text(string))
     }
 
     override fun toString(): String {
