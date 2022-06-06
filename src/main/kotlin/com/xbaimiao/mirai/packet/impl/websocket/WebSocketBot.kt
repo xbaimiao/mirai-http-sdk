@@ -109,9 +109,7 @@ class WebSocketBot(config: WsInfo) {
 
     fun join() {
         Thread {
-            while (true) {
-                Thread.sleep(10000)
-            }
+            Thread.currentThread().join()
         }.start()
     }
 

@@ -1,23 +1,30 @@
-# mirai-http-sdk
-
-#狗都不用
-
-## Building
-
-* [Gradle](https://gradle.org/) - Dependency Management
-
-The GradleWrapper in included in this project.
-
-**Windows:**
-
+```kotlin
+fun main() {
+    val wsInfo = WsInfo("http://127.0.0.1:8099/", 2157207381, "INITKEYCgTu5Bcx")
+    bot = WebSocketBot(wsInfo).connect()
+    bot.join()
+    bot.eventChancel.subscribe<GroupMessageEvent> {
+        val msg = message.contentToString()
+        var boolean1 = false
+        for (baseComponent in this.message.toList()) {
+            if (baseComponent is PlainText) {
+                if (baseComponent.string == "禁言") {
+                    boolean1 = true
+                }
+            }
+        }
+        for (baseComponent in this.message.toList()) {
+            if (baseComponent is At) {
+                if (boolean1) {
+                    group.getMember(baseComponent.target).thenAccept {
+                        it!!.mute(600)
+                    }
+                }
+            }
+        }
+        if (msg == "回复我") {
+            group.quoteMessage(Component.text("好"), "${this.messageSource.messageId}")
+        }
+    }
+}
 ```
-gradlew.bat clean shadowJar
-```
-
-**macOS/Linux:**
-
-```
-./gradlew clean shadowJar
-```
-
-Build artifacts should be found in `./build/libs` folder.

@@ -9,8 +9,7 @@ class GroupTempMessageEvent(
     group: Group,
     override val sender: MemberFriend,
     messageSource: MessageSource,
-    component: BaseComponent
+    message: BaseComponent
 ) : GroupMessageEvent(
-    group, sender, messageSource, component
-) {
-}
+    group, sender, messageSource, message
+)

@@ -8,7 +8,7 @@ import com.xbaimiao.mirai.packet.enums.ComponentType
 
 class Emoji(
     val emojiId: Int,
-    val name: String = "bu",
+    val name: String = "Emoji",
     children: List<BaseComponent> = ComponentList()
 ) : AbstractComponent(children) {
 

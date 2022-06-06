@@ -85,7 +85,7 @@ sealed interface MiraiSerializer<I, O> {
                         }
                         component += Voice(voiceId, it.get("url").asString, base64, it.get("length").asLong)
                     }
-                    ComponentType.POKE -> component += Poke(PokeType.StringToType(it.get("name").asString))
+                    ComponentType.POKE -> component += Poke(PokeType.formString(it.get("name").asString))
                     ComponentType.MIRAI -> component += MiraiCode(it.get("code").asString)
                     ComponentType.DICE -> component += Dice(it.get("value").asInt)
                     ComponentType.JSON -> component += Json(it.get("json").asString)

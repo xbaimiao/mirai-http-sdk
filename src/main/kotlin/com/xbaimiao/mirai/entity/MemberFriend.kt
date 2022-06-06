@@ -48,6 +48,9 @@ class MemberFriend(
         return component.sendTo(this, MessageType.TEMP)
     }
 
+    /**
+     *  禁言
+     */
     fun mute(time: Int): CompletableFuture<MuteMemberFriendPacket.Result> {
         val future = CompletableFuture<MuteMemberFriendPacket.Result>()
         MuteMemberFriendPacket(id, group.id, time).send().thenApplyAsync {
@@ -56,6 +59,9 @@ class MemberFriend(
         return future
     }
 
+    /**
+     * 解除禁言
+     */
     fun unmute(): CompletableFuture<UnMuteMemberFriendPacket.Result> {
         val future = CompletableFuture<UnMuteMemberFriendPacket.Result>()
         UnMuteMemberFriendPacket(id, group.id).send().thenApplyAsync {

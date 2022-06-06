@@ -11,10 +11,8 @@ open class GroupMessageEvent(
     val group: Group,
     override val sender: MemberFriend,
     messageSource: MessageSource,
-    component: BaseComponent
-) : MessageEvent(sender, messageSource, component) {
-
-    val plainText = MiraiSerializer.ComponentText.serialize(component)
+    message: BaseComponent
+) : MessageEvent(sender, messageSource, message) {
 
     fun reply(baseComponent: BaseComponent) = group.sendMessage(baseComponent)
 

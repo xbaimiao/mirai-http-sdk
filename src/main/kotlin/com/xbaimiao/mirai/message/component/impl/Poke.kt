@@ -17,12 +17,12 @@ class Poke(
     override fun serializeToJson(): JsonObject {
         return JsonObject().apply {
             addProperty("type", "Poke")
-            addProperty("name", PokeType.TypeToString(name))
+            addProperty("name", PokeType.typeToString(name))
         }
     }
 
     override fun serializeToPlainText(): String {
-        return PokeType.TypeToString(name)
+        return PokeType.typeToString(name)
     }
 
 }

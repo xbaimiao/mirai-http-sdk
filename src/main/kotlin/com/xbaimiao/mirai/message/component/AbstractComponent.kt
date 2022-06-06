@@ -1,6 +1,7 @@
 package com.xbaimiao.mirai.message.component
 
 import com.xbaimiao.mirai.message.component.collections.ComponentList
+import com.xbaimiao.mirai.message.serialize.MiraiSerializer
 
 @Suppress("UnnecessaryAbstractClass") // but this shouldn't be instantiated
 abstract class AbstractComponent protected constructor(
@@ -27,6 +28,10 @@ abstract class AbstractComponent protected constructor(
         if (children != other.children) return false
 
         return true
+    }
+
+    override fun contentToString(): String {
+        return MiraiSerializer.ComponentText.serialize(this)
     }
 
     override fun hashCode() = children.hashCode()

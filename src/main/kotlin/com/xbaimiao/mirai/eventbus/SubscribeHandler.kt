@@ -26,7 +26,7 @@ annotation class SubscribeHandler(
      * SubscribePriority.HIGHEST
      * SubscribePriority.MONITOR
      * @return 这个处理器的优先级
-     * @see com.xbaimiao.mrai.eventbus.SubscribeHandler
+     * @see com.xbaimiao.mirai.eventbus.SubscribeHandler
      */
     val priority: SubscribePriority = SubscribePriority.NORMAL,
     /**
@@ -34,7 +34,7 @@ annotation class SubscribeHandler(
      * 如果为`true`而且事件发生，这个处理器不会被调用，反之相反
      *
      * @return 这个处理器是否忽略被取消的事件
-     * @see com.xbaimiao.mrai.eventbus.SubscribeHandler
+     * @see com.xbaimiao.mirai.eventbus.SubscribeHandler
      */
     val ignoreCancelled: Boolean = false
 )

@@ -112,7 +112,7 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
         return accumulatedMessage
     }
 
-    fun JsonArray.toSource(): MessageSource {
+    private fun JsonArray.toSource(): MessageSource {
         for (it in this) {
             if (it.asJsonObject.get("type").asString == "Source") {
                 return Gson().fromJson(it, MessageSource::class.java)
