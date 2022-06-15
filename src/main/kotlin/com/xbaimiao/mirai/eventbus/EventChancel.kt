@@ -2,16 +2,17 @@ package com.xbaimiao.mirai.eventbus
 
 import com.xbaimiao.mirai.event.Cancellable
 import com.xbaimiao.mirai.event.Event
+import java.util.LinkedList
 
 object EventChancel : SubscribeListener {
 
     private val listenerMap = LinkedHashSet<SubscribeListenerExecute>()
 
-    val funcListenerMap = LinkedHashMap<Class<out Event>, Event.() -> Unit>()
+    val funcListenerList = LinkedList<FuncListener>()
 
     fun call(event: Event) {
-        funcListenerMap.asSequence().filter { it.key == event.javaClass }.forEach {
-            it.value.invoke(event)
+        funcListenerList.asSequence().filter { it.clazz == event.javaClass }.forEach {
+            it.func.invoke(event)
         }
         for (listenerExecute in listenerMap.filter { event::class.java == it.method.parameters[0].type }
             .sortedBy { it.subscribeHandler.priority }) {
@@ -37,7 +38,7 @@ object EventChancel : SubscribeListener {
 
     @Suppress("Unchecked_cast")
     inline fun <reified T : Event> subscribe(noinline func: T.() -> Unit) {
-        funcListenerMap[T::class.java] = func as Event.() -> Unit
+        funcListenerList.add(FuncListener(T::class.java, func as Event.() -> Unit))
     }
 
     fun unsubscribe(listener: SubscribeListener) {

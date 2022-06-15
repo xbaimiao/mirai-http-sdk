@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.6.10"
     java
+    id("com.github.johnrengelman.shadow") version ("7.1.2")
     `maven-publish`
 }
 
@@ -33,6 +34,10 @@ tasks.test {
     testLogging {
         events("passed", "skipped", "failed")
     }
+}
+
+tasks.shadowJar{
+    relocate("com.google.gson", "com.xbaimiao.mirai.libs.gson")
 }
 
 tasks.withType<KotlinCompile>().configureEach {
