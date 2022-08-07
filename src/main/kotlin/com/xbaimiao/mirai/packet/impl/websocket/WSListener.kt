@@ -4,10 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import com.xbaimiao.mirai.entity.Friend
+import com.xbaimiao.mirai.entity.Group
 import com.xbaimiao.mirai.entity.MemberFriend
-import com.xbaimiao.mirai.event.FriendMessageEvent
-import com.xbaimiao.mirai.event.GroupMessageEvent
-import com.xbaimiao.mirai.event.GroupTempMessageEvent
+import com.xbaimiao.mirai.event.*
 import com.xbaimiao.mirai.eventbus.EventChancel
 import com.xbaimiao.mirai.message.MessageSource
 import com.xbaimiao.mirai.message.serialize.MiraiSerializer
@@ -91,6 +90,14 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
                             MiraiSerializer.ComponentSerializer.deserialize(data.get("messageChain").asJsonArray)
                         )
                         EventChancel.call(friendMessageEvent)
+                    }
+                    "BotGroupPermissionChangeEvent" -> {
+                        val groupPermissionEvent = GroupPermissionChangeEvent(
+                            Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
+                            data.get("origin").asString,
+                            data.get("current").asString
+                        )
+                        EventChancel.call(groupPermissionEvent)
                     }
                 }
                 return accumulatedMessage
