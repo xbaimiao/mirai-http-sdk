@@ -1,5 +1,6 @@
 package com.xbaimiao.mirai.example
 
+import com.xbaimiao.mirai.event.BotJoinGroupEvent
 import com.xbaimiao.mirai.event.GroupMessageEvent
 import com.xbaimiao.mirai.eventbus.SubscribeHandler
 import com.xbaimiao.mirai.eventbus.SubscribeListener
@@ -17,18 +18,8 @@ fun main() {
     bot.join()
     bot.eventChancel.subscribe(object : SubscribeListener {
         @SubscribeHandler(priority = SubscribePriority.NORMAL)
-        fun groupMessageEvent(event: GroupMessageEvent) {
-            event.group.sendMessage(
-                Music(
-                    MusicType.QQ,
-                    "Test",
-                    "Powered by FlyProject",
-                    "https://localhost",
-                    "http://y.gtimg.cn/music/photo_new/T002R300x300M000001MyK3Y47zLur.jpg",
-                    "https://loaclhost/test.mp3",
-                    "[测试] 测试"
-                )
-            )
+        fun test(event: BotJoinGroupEvent){
+            event.group
         }
     })
 }

@@ -41,3 +41,14 @@ fun main() {
     }
 }
 ```
+
+## 依赖
+```
+    maven{
+       url = "https://repo.fastmcmirror.org/content/repositories/releases/"
+    }
+    
+    dependencies {
+       implementation 'com.xbaimiao:mirai-http-sdk:1.0.4-alpha-f9b3815'
+    }
+```
