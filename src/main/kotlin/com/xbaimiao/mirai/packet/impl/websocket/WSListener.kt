@@ -6,6 +6,7 @@ import com.google.gson.JsonParser
 import com.xbaimiao.mirai.entity.Friend
 import com.xbaimiao.mirai.entity.Group
 import com.xbaimiao.mirai.entity.MemberFriend
+import com.xbaimiao.mirai.entity.MessageSubject
 import com.xbaimiao.mirai.event.*
 import com.xbaimiao.mirai.eventbus.EventChancel
 import com.xbaimiao.mirai.message.MessageSource
@@ -71,6 +72,7 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
                         )
                         EventChancel.call(groupMessageEvent)
                     }
+
                     "TempMessage" -> {
                         val memberFriend =
                             Gson().fromJson(data.get("sender").asJsonObject, MemberFriend::class.java)
@@ -82,6 +84,7 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
                         )
                         EventChancel.call(groupMessageEvent)
                     }
+
                     "FriendMessage" -> {
                         val friend = Gson().fromJson(data.get("sender").asJsonObject, Friend::class.java)
                         val friendMessageEvent = FriendMessageEvent(
@@ -91,6 +94,7 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
                         )
                         EventChancel.call(friendMessageEvent)
                     }
+
                     "BotGroupPermissionChangeEvent" -> {
                         val groupPermissionEvent = GroupPermissionChangeEvent(
                             Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
@@ -98,6 +102,112 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
                             data.get("current").asString
                         )
                         EventChancel.call(groupPermissionEvent)
+                    }
+
+                    "BotMuteEvent" -> {
+                        val member: MemberFriend =
+                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val botMuteEvent = BotMuteEvent(
+                            member.group,
+                            data.get("durationSeconds").asInt,
+                            member
+                        )
+                        EventChancel.call(botMuteEvent)
+                    }
+
+                    "BotUnmuteEvent" -> {
+                        val member: MemberFriend =
+                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val botUnMuteEvent = BotUnMuteEvent(
+                            member.group,
+                            member
+                        )
+                        EventChancel.call(botUnMuteEvent)
+                    }
+
+                    "BotJoinGroupEvent" -> {
+                        val botJoinGroupEvent: BotJoinGroupEvent;
+                        if (data.get("invitor").isJsonNull) {
+                            botJoinGroupEvent = BotJoinGroupEvent(
+                                Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
+                                null
+                            )
+                        } else {
+                            val member: MemberFriend =
+                                Gson().fromJson(data.get("invitor").asJsonObject, MemberFriend::class.java)
+                            botJoinGroupEvent = BotJoinGroupEvent(
+                                Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
+                                member
+                            )
+                        }
+                        EventChancel.call(botJoinGroupEvent)
+                    }
+
+                    "BotLeaveEventActive" -> {
+                        val botLeaveEventActive = BotLeaveEventActive(
+                            Gson().fromJson(data.get("group").asJsonObject, Group::class.java)
+                        )
+                        EventChancel.call(botLeaveEventActive)
+                    }
+
+                    "BotLeaveEventKick" -> {
+                        val botLeaveEventKick = BotLeaveEventKick(
+                            Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
+                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        )
+                        EventChancel.call(botLeaveEventKick)
+                    }
+
+                    "BotLeaveEventDisband" -> {
+                        val botLeaveEventDisband = BotLeaveEventDisband(
+                            Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
+                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        )
+                        EventChancel.call(botLeaveEventDisband)
+                    }
+
+                    "GroupRecallEvent" -> {
+                        val groupRecallEvent = GroupRecallEvent(
+                            Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
+                            data.get("authorId").asLong,
+                            data.get("messageId").asInt,
+                            data.get("time").asInt,
+                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        )
+                        EventChancel.call(groupRecallEvent)
+                    }
+
+                    "FriendRecallEvent" -> {
+                        val friendRecallEvent = FriendRecallEvent(
+                            data.get("authorId").asLong,
+                            data.get("messageId").asInt,
+                            data.get("time").asInt,
+                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        )
+                        EventChancel.call(friendRecallEvent)
+                    }
+
+                    "NudgeEvent" -> {
+                        val nudgeEvent = NudgeEvent(
+                            data.get("fromId").asLong,
+                            Gson().fromJson(data.get("subject").asJsonObject, MessageSubject::class.java),
+                            data.get("action").asString,
+                            data.get("suffix").asString,
+                            data.get("target").asLong
+                        )
+                        EventChancel.call(nudgeEvent)
+                    }
+
+                    "GroupNameChangeEvent" -> {
+                        val member: MemberFriend =
+                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val groupNameChangeEvent = GroupNameChangeEvent(
+                            member.group,
+                            member,
+                            data.get("origin").asString,
+                            data.get("current").asString
+                        )
+                        EventChancel.call(groupNameChangeEvent)
                     }
                 }
                 return accumulatedMessage

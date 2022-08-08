@@ -18,7 +18,17 @@ fun main() {
     bot.eventChancel.subscribe(object : SubscribeListener {
         @SubscribeHandler(priority = SubscribePriority.NORMAL)
         fun groupMessageEvent(event: GroupMessageEvent) {
-            event.group.sendMessage(Music(MusicType.QQ,"Test","Powered by FlyProject","https://localhost","http://y.gtimg.cn/music/photo_new/T002R300x300M000001MyK3Y47zLur.jpg","https://loaclhost/test.mp3","[测试] 测试"))
+            event.group.sendMessage(
+                Music(
+                    MusicType.QQ,
+                    "Test",
+                    "Powered by FlyProject",
+                    "https://localhost",
+                    "http://y.gtimg.cn/music/photo_new/T002R300x300M000001MyK3Y47zLur.jpg",
+                    "https://loaclhost/test.mp3",
+                    "[测试] 测试"
+                )
+            )
         }
     })
 }

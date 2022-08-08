@@ -26,9 +26,11 @@ class MuteMemberFriendPacket(
             0 -> {
                 Result.SUCCESS
             }
+
             5 -> {
                 Result.NOT_MEMBER
             }
+
             else -> {
                 Result.FAILED
             }

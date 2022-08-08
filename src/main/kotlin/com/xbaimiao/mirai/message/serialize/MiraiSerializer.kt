@@ -59,6 +59,7 @@ sealed interface MiraiSerializer<I, O> {
                         it.get("musicUrl").asString,
                         it.get("brief").asString
                     )
+
                     ComponentType.FLASH_IMAGE -> {
                         var imageId = ""
                         if (!it.get("imageId").isJsonNull) {
@@ -74,6 +75,7 @@ sealed interface MiraiSerializer<I, O> {
                         }
                         component += FlashImage(imageId, url, base64)
                     }
+
                     ComponentType.VOICE -> {
                         var base64 = ""
                         var voiceId = ""
@@ -85,6 +87,7 @@ sealed interface MiraiSerializer<I, O> {
                         }
                         component += Voice(voiceId, it.get("url").asString, base64, it.get("length").asLong)
                     }
+
                     ComponentType.POKE -> component += Poke(PokeType.formString(it.get("name").asString))
                     ComponentType.MIRAI -> component += MiraiCode(it.get("code").asString)
                     ComponentType.DICE -> component += Dice(it.get("value").asInt)

@@ -2,7 +2,7 @@ package com.xbaimiao.mirai.eventbus
 
 import com.xbaimiao.mirai.event.Cancellable
 import com.xbaimiao.mirai.event.Event
-import java.util.LinkedList
+import java.util.*
 
 object EventChancel : SubscribeListener {
 
