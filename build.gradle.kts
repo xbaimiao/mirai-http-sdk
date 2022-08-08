@@ -54,13 +54,10 @@ configure<JavaPluginConvention> {
 
 publishing {
     repositories {
-        maven("https://repo.fastmcmirror.org/content/repositories/snapshots/") {
+        maven("https://repo.fastmcmirror.org/content/repositories/releases/") {
             credentials {
                 username = System.getenv("RepoUser")
                 password = System.getenv("RepoPassword")
-            }
-            authentication {
-                create<BasicAuthentication>("basic")
             }
         }
     }
