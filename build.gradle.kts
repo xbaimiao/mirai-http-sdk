@@ -1,4 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.nio.Buffer
 
 plugins {
     kotlin("jvm") version "1.6.10"
@@ -8,7 +11,7 @@ plugins {
 }
 
 group = "com.xbaimiao"
-version = "1.0.4-alpha-1"
+version = "1.0.4-alpha-" + id()
 
 repositories {
     mavenCentral()
@@ -51,10 +54,10 @@ configure<JavaPluginConvention> {
 
 publishing {
     repositories {
-        maven("https://run.xbaimiao.com/releases/") {
+        maven("https://repo.fastmcmirror.org/content/repositories/snapshots/") {
             credentials {
-                username = project.findProperty("user").toString()
-                password = project.findProperty("password").toString()
+                username = System.getenv("RepoUser")
+                password = System.getenv("RepoPassword")
             }
             authentication {
                 create<BasicAuthentication>("basic")
@@ -67,4 +70,16 @@ publishing {
             groupId = "com.xbaimiao"
         }
     }
+}
+
+fun id(): String{
+    val process = Runtime.getRuntime().exec("git rev-parse --short HEAD")
+    val reader = BufferedReader(InputStreamReader(process.inputStream))
+    val cid = reader.readLine()
+    if (cid==null) {
+        println("Failed get commit id")
+        System.exit(0)
+    }
+    println("Commit ID: " + cid)
+    return cid;
 }
