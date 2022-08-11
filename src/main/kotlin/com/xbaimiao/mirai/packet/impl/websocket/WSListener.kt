@@ -271,16 +271,17 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
                     "MemberJoinEvent" -> {
                         val memberJoinEvent: MemberJoinEvent;
                         if (data.get("invitor").isJsonNull) {
+                            val member: MemberFriend = Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java)
                             memberJoinEvent = MemberJoinEvent(
-                                Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
-                                Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java),
+                                member.group,
+                                member,
                                 null
                             )
                         } else {
                             val member: MemberFriend =
                                 Gson().fromJson(data.get("invitor").asJsonObject, MemberFriend::class.java)
                             memberJoinEvent = MemberJoinEvent(
-                                Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
+                                Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java).group,
                                 Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java),
                                 member
                             )
