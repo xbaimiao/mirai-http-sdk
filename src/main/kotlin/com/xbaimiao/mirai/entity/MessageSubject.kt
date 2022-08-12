@@ -1,24 +1,19 @@
-package com.xbaimiao.mirai.entity;
+package com.xbaimiao.mirai.entity
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class MessageSubject {
+class MessageSubject {
     @SerializedName("id")
-    private int id;
+    var id = 0
 
     @SerializedName("kind")
-    private String kind;
+    var kind: String? = null
 
-    public int getId() {
-        return id;
+    fun getKind(): SubjectKind{
+        return SubjectKind.valueOf(kind!!)
     }
 
-    public SubjectKind getKind() {
-        return SubjectKind.valueOf(kind);
-    }
-
-    enum SubjectKind {
-        Group,
-        Friend
+    enum class SubjectKind {
+        Group, Friend
     }
 }

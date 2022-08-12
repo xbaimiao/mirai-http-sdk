@@ -13,13 +13,13 @@ import com.xbaimiao.mirai.packet.impl.websocket.WsInfo
 private lateinit var bot: WebSocketBot
 
 fun main() {
-    val webSocketBotConfig = WsInfo("http://localhost:8080/", 1000000, "AUTHKEY")
+    val webSocketBotConfig = WsInfo("http://127.0.0.1", 1000000000, "123456")
     bot = WebSocketBot(webSocketBotConfig).connect()
     bot.join()
     bot.eventChancel.subscribe(object : SubscribeListener {
         @SubscribeHandler(priority = SubscribePriority.NORMAL)
-        fun test(event: BotJoinGroupEvent){
-            event.group
+        fun test(event: GroupMessageEvent){
+
         }
     })
 }
