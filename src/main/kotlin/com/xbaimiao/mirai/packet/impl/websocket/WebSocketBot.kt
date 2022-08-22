@@ -4,7 +4,9 @@ import com.xbaimiao.mirai.entity.Friend
 import com.xbaimiao.mirai.entity.Group
 import com.xbaimiao.mirai.eventbus.EventChancel
 import com.xbaimiao.mirai.packet.enums.EntityType
+import com.xbaimiao.mirai.packet.impl.group.BotProfilePacket
 import com.xbaimiao.mirai.packet.impl.group.EntityListPacket
+import com.xbaimiao.mirai.packet.impl.group.QQProfile
 import java.net.ConnectException
 import java.net.URI
 import java.net.http.HttpClient
@@ -29,6 +31,14 @@ class WebSocketBot(config: WsInfo) {
                 this.complete(it.entitys)
             }
         }
+    }
+
+    fun profile(): CompletableFuture<QQProfile?> {
+        val future = CompletableFuture<QQProfile?>()
+        BotProfilePacket().send().thenApplyAsync {
+            future.complete(it.botProfile)
+        }
+        return future
     }
 
     fun getFriends(): CompletableFuture<List<Friend>> {

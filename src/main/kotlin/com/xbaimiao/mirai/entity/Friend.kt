@@ -6,6 +6,8 @@ import com.xbaimiao.mirai.entity.MiraiMessageTransmittable.Factory.sendTo
 import com.xbaimiao.mirai.message.Message
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.packet.enums.MessageType
+import com.xbaimiao.mirai.packet.impl.group.FriendProfilePacket
+import com.xbaimiao.mirai.packet.impl.group.QQProfile
 import java.util.concurrent.CompletableFuture
 
 open class Friend(
@@ -32,6 +34,14 @@ open class Friend(
 
     override fun quoteMessage(component: BaseComponent, quote: String): CompletableFuture<Message> {
         return component.sendTo(this, MessageType.FRIEND, quote)
+    }
+
+    fun profile(): CompletableFuture<QQProfile?> {
+        val future = CompletableFuture<QQProfile?>()
+        FriendProfilePacket(id).send().thenApplyAsync {
+            future.complete(it.friendProfile)
+        }
+        return future
     }
 
     override fun toString(): String {

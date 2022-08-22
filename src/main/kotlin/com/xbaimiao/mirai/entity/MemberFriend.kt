@@ -7,7 +7,9 @@ import com.xbaimiao.mirai.entity.enums.Permission
 import com.xbaimiao.mirai.message.Message
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.packet.enums.MessageType
+import com.xbaimiao.mirai.packet.impl.group.MemberProfilePacket
 import com.xbaimiao.mirai.packet.impl.group.MuteMemberFriendPacket
+import com.xbaimiao.mirai.packet.impl.group.QQProfile
 import com.xbaimiao.mirai.packet.impl.group.UnMuteMemberFriendPacket
 import java.util.concurrent.CompletableFuture
 
@@ -66,6 +68,14 @@ class MemberFriend(
         val future = CompletableFuture<UnMuteMemberFriendPacket.Result>()
         UnMuteMemberFriendPacket(id, group.id).send().thenApplyAsync {
             future.complete(it.result)
+        }
+        return future
+    }
+
+    fun memberprofile(): CompletableFuture<QQProfile?> {
+        val future = CompletableFuture<QQProfile?>()
+        MemberProfilePacket(group.id, id).send().thenApplyAsync {
+            future.complete(it.memberProfile)
         }
         return future
     }
