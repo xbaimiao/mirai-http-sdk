@@ -8,8 +8,7 @@ import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
 
 class FriendProfilePacket(
-    val target: Long,
-    val memberId: Long
+    val target: Long
 ) : CommandPacket<FriendProfilePacket>(
     command = "friendProfile",
     subCommand = "get",

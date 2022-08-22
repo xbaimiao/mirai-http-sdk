@@ -8,8 +8,6 @@ import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
 
 class BotProfilePacket(
-    val target: Long,
-    val memberId: Long
 ) : CommandPacket<BotProfilePacket>(
     command = "botProfile",
     subCommand = "get",
