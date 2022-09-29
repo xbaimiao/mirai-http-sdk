@@ -42,8 +42,16 @@ class MemberFriend(
      */
     @SerializedName("muteTimeRemaining")
     val muteTimeRemaining: Long,
+    /**
+     * 群聊
+     */
     @SerializedName("group")
-    val group: Group
+    val group: Group,
+    /**
+     * 群荣誉
+     */
+    @SerializedName("active")
+    val active: MemberActive
 ) : Friend(id, nickName, "") {
 
     override fun sendMessage(component: BaseComponent): CompletableFuture<Message> {
