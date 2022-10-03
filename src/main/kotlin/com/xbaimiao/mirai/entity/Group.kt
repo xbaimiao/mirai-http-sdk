@@ -27,7 +27,12 @@ class Group(
      * 机器人在此群的权限
      */
     @SerializedName("permission")
-    val permission: Permission
+    val permission: Permission,
+    /**
+     * 群荣誉
+     */
+    @SerializedName("active")
+    val active: GroupActive
 ) : MiraiMessageTransmittable {
 
     fun getMembers(): CompletableFuture<List<MemberFriend>> {
