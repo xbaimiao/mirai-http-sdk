@@ -12,49 +12,46 @@ import com.xbaimiao.mirai.eventbus.EventChancel
 import com.xbaimiao.mirai.message.MessageSource
 import com.xbaimiao.mirai.message.serialize.MiraiSerializer
 import com.xbaimiao.mirai.packet.CommandPacket
+import org.java_websocket.client.WebSocketClient
+import org.java_websocket.handshake.ServerHandshake
 import java.io.StringReader
-import java.net.http.WebSocket
+import java.net.URI
 import java.util.concurrent.CompletableFuture
-import java.util.concurrent.CompletionStage
 
 /**
  * 监听器
  */
-class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
+class WSListener(private val bot: WebSocketBot, serverUri: URI?) : WebSocketClient(serverUri) {
 
     val putPackets = HashMap<Long, CommandPacket<*>>()
     var buffer = StringBuilder()
     private val accumulatedMessage = CompletableFuture<Any>()
     internal var on = true
 
-    override fun onOpen(webSocket: WebSocket) {
-        webSocket.request(1)
+    override fun onOpen(handshakedata: ServerHandshake?) {
+        bot.getGroups()
+        bot.getFriends()
     }
 
-    override fun onClose(webSocket: WebSocket?, statusCode: Int, reason: String?): CompletionStage<*>? {
+    override fun onClose(statusCode: Int, reason: String?, remote: Boolean) {
         bot.closeFunc.forEach { it.invoke(bot) }
-        return null
     }
 
-    override fun onError(webSocket: WebSocket, error: Throwable) {
-        error.printStackTrace()
+    override fun onError(ex: java.lang.Exception?) {
+        ex!!.printStackTrace()
     }
 
-    override fun onText(webSocket: WebSocket, charSequence: CharSequence, last: Boolean): CompletionStage<*> {
+    override fun onMessage(message: String?) {
         if (!on) {
-            return accumulatedMessage
+            return
         }
-        buffer.append(charSequence)
-        webSocket.request(1)
-        if (!last) {
-            return accumulatedMessage
-        }
+        buffer.append(message)
         val text = buffer.toString()
         buffer = StringBuilder()
         try {
             val jsonObject = JsonParser.parseReader(StringReader(text)).asJsonObject
             if (!jsonObject.has("syncId")) {
-                return CompletableFuture<Any>()
+                return
             }
             val syncId = jsonObject.get("syncId").asString
             if (syncId == "-1") {
@@ -392,11 +389,11 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
                     }
 
                 }
-                return accumulatedMessage
+                return
             }
             if (syncId == "") {
                 //推送消息
-                return accumulatedMessage
+                return
             }
             putPackets.keys.forEach {
                 if (syncId.toLong() == it) {
@@ -408,7 +405,7 @@ class WSListener(private val bot: WebSocketBot) : WebSocket.Listener {
             println("input \"$text\"")
             e.printStackTrace()
         }
-        return accumulatedMessage
+        return
     }
 
     private fun JsonArray.toSource(): MessageSource {

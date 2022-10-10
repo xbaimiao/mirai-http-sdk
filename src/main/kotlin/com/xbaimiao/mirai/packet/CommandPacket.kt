@@ -28,8 +28,8 @@ abstract class CommandPacket<T>(
     open val future: CompletableFuture<T> = CompletableFuture<T>()
 
     override fun send(): CompletableFuture<T> {
-        bindWSPacket.wsListener.putPackets[syncId] = this
-        ws.sendText(this.serializerToJson(), true)
+        bindWSPacket.webSocket.putPackets[syncId] = this
+        ws.send(this.serializerToJson())
         return future
     }
 

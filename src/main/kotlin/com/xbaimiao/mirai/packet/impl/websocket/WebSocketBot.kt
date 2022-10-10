@@ -9,10 +9,6 @@ import com.xbaimiao.mirai.packet.impl.group.EntityListPacket
 import com.xbaimiao.mirai.packet.impl.group.QQProfile
 import java.net.ConnectException
 import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.WebSocket
-import java.time.Duration
-import java.time.temporal.ChronoUnit
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -62,21 +58,17 @@ class WebSocketBot(config: WsInfo) {
     val id = config.qq
 
     internal val closeFunc = ArrayList<WebSocketBot.() -> Unit>()
-    internal lateinit var webSocket: WebSocket
-    internal lateinit var wsListener: WSListener
+    internal lateinit var webSocket: WSListener
 
     private var safeShutdown = false
-    private var httpClient = HttpClient.newBuilder().connectTimeout(Duration.of(6, ChronoUnit.SECONDS)).build()
     private val url = config.baseUrl.replace("http", "ws") + "all?verifyKey=${config.authKey}&qq=${id}"
     var groupCache = arrayListOf<Group>()
     var friendCache = arrayListOf<Friend>()
 
     fun connect(): WebSocketBot {
         try {
-            webSocket =
-                httpClient.newWebSocketBuilder().buildAsync(URI(url), WSListener(this).also { wsListener = it }).join()
-            getGroups()
-            getFriends()
+            webSocket = WSListener(bot, URI(url))
+            webSocket.connectBlocking()
         } catch (e: ConnectException) {
             e.printStackTrace()
         }
@@ -88,9 +80,8 @@ class WebSocketBot(config: WsInfo) {
      */
     fun disable() {
         safeShutdown = true
-        webSocket.sendClose(1000, "close")
-        webSocket.abort()
-        wsListener.on = false
+        webSocket.close(1000, "close")
+        webSocket.on = false
     }
 
     /**

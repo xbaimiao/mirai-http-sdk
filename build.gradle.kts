@@ -29,6 +29,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.9")
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.java-websocket:Java-WebSocket:1.5.3")
 }
 
 tasks.test {
