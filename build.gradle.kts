@@ -41,15 +41,19 @@ tasks.test {
 
 tasks.shadowJar{
     relocate("com.google.gson", "com.xbaimiao.mirai.libs.gson")
+    dependencies {
+        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.6.10"))
+        exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10"))
+    }
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 publishing {
@@ -58,6 +62,12 @@ publishing {
             credentials {
                 username = System.getenv("RepoUser")
                 password = System.getenv("RepoPassword")
+            }
+        }
+        maven("https://repo.xbaimiao.com/nexus/content/groups/public/") {
+            credentials {
+                username = System.getenv("user")
+                password = System.getenv("password")
             }
         }
     }
