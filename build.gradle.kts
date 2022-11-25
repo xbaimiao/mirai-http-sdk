@@ -64,12 +64,12 @@ publishing {
                 password = System.getenv("RepoPassword")
             }
         }
-        maven("https://repo.xbaimiao.com/nexus/content/groups/public/") {
+        /*maven("https://repo.xbaimiao.com/nexus/content/groups/public/") {
             credentials {
                 username = System.getenv("user")
                 password = System.getenv("password")
             }
-        }
+        }*/
     }
     publications {
         create<MavenPublication>("maven") {
