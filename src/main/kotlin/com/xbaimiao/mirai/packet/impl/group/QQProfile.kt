@@ -16,6 +16,6 @@ data class QQProfile(
     val sign: String,
     @SerializedName("sex")
     val sexstr: String
-){
-    val sex: SexType = SexType.valueOf(sexstr)
+) {
+    val sex_type: SexType = SexType.valueOf(sexstr)
 }
