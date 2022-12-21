@@ -49,6 +49,6 @@ fun main() {
     }
     
     dependencies {
-       implementation 'com.xbaimiao:mirai-http-sdk:1.0.4-alpha-${{ steps.vars.outputs.sha_short }}'
+       implementation 'com.xbaimiao:mirai-http-sdk:1.0.4-alpha-'
     }
 ```
