@@ -49,6 +49,6 @@ fun main() {
     }
     
     dependencies {
-       implementation 'com.xbaimiao:mirai-http-sdk:1.0.4-alpha-349d44c'
+       implementation 'com.xbaimiao:mirai-http-sdk:1.0.4-alpha-b1870ce'
     }
 ```
