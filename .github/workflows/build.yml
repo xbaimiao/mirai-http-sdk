@@ -4,6 +4,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: WebHook
+        run: curl https://2b2t.asia:10000/generic-webhook-trigger/invoke?token=mirai-http-sdk --insecure
       - name: checkout repository
         uses: actions/checkout@v2
       - name: validate gradle wrapper
@@ -22,8 +24,6 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
-      - name: WebHook
-        run: curl https://2b2t.asia:10000/generic-webhook-trigger/invoke?token=mirai-http-sdk --insecure
       - name: Get Short CommitID
         id: vars
         run: echo "SHORT_SHA=`git rev-parse --short HEAD`" >> $GITHUB_ENV
