@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.xbaimiao"
-version = "1.0.4-alpha-" + id()
+version = "1.0.4-beta-" + id()
 
 repositories {
     mavenCentral()

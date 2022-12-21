@@ -18,6 +18,21 @@ class WebSocketBot(config: WsInfo) {
 
     companion object {
         lateinit var bot: WebSocketBot
+        private lateinit var hook: Thread
+
+        init {
+            hook = object : Thread() {
+
+                override fun run() {
+                    Runtime.getRuntime().removeShutdownHook(hook)
+                    //程序关闭 自动安全断线
+                    bot.disable()
+                }
+
+            }
+            hook.name = "MiraiHttpSDK-ShutdownHook-" + Thread.activeCount()
+            Runtime.getRuntime().addShutdownHook(hook)
+        }
     }
 
     fun getGroups(): CompletableFuture<List<Group>> {
