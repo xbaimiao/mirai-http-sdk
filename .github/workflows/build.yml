@@ -24,15 +24,15 @@ jobs:
           path: build/libs/
       - name: Get Short CommitID
         id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "SHORT_SHA=`git rev-parse --short HEAD`" >> $GITHUB_ENV
       - name: Checking Short CommitID
-        run: echo ${{ steps.vars.outputs.sha_short }}
+        run: echo ${SHORT_SHA}
       - name: "Rendering README"
         uses: varunsridharan/action-dynamic-readme@main
         with:
           GLOBAL_TEMPLATE_REPOSITORY: "{repository-owner}/{repository-name}"
           files: |
-            README.md
+            template/README.md=README.md
           committer_name: README-READER[bot]
           committer_email: README-READER[bot]@users.noreply.github.com
           commit_message: '[ci skip] Auto Rending: README'
