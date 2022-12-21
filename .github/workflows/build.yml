@@ -30,7 +30,7 @@ jobs:
       - name: "Rendering README"
         uses: varunsridharan/action-dynamic-readme@main
         with:
-          GLOBAL_TEMPLATE_REPOSITORY: { repository-owner }/{repository-name}
+          GLOBAL_TEMPLATE_REPOSITORY: "{repository-owner}/{repository-name}"
           files: |
             README.md
           committer_name: README-READER[bot]
