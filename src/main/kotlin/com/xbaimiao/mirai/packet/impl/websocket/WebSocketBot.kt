@@ -129,6 +129,10 @@ class WebSocketBot(config: WsInfo) {
         }.start()
     }
 
+    fun getSessionKey(): String {
+        return webSocket.sessionKey
+    }
+
     init {
         bot = this
     }

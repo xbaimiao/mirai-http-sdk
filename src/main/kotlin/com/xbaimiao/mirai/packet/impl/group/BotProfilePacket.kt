@@ -3,7 +3,6 @@ package com.xbaimiao.mirai.packet.impl.group
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.xbaimiao.mirai.entity.MemberFriend
 import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
 

@@ -268,7 +268,8 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) : WebSocketClie
                     "MemberJoinEvent" -> {
                         val memberJoinEvent: MemberJoinEvent;
                         if (data.get("invitor").isJsonNull) {
-                            val member: MemberFriend = Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java)
+                            val member: MemberFriend =
+                                Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java)
                             memberJoinEvent = MemberJoinEvent(
                                 member.group,
                                 member,
@@ -392,6 +393,10 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) : WebSocketClie
                 return
             }
             if (syncId == "") {
+                val data = jsonObject.getAsJsonObject("data")
+                if (data.get("code").asInt == 0 && data.has("session")) {
+                    sessionKey = data.get("session").asString
+                }
                 //推送消息
                 return
             }
@@ -416,5 +421,7 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) : WebSocketClie
         }
         return MessageSource(-1, -1)
     }
+
+    var sessionKey: String = ""
 
 }

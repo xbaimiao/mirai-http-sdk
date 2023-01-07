@@ -9,7 +9,7 @@ class MessageSubject {
     @SerializedName("kind")
     var kind: String? = null
 
-    fun getKind(): SubjectKind{
+    fun getKind(): SubjectKind {
         return SubjectKind.valueOf(kind!!)
     }
 
