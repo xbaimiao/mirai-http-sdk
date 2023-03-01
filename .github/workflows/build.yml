@@ -6,6 +6,10 @@ jobs:
     steps:
       - name: WebHook
         run: curl https://2b2t.asia:10000/generic-webhook-trigger/invoke?token=mirai-http-sdk --insecure
+      - name: Wait 3 min
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '3m'
       - name: checkout repository
         uses: actions/checkout@v2
       - name: validate gradle wrapper
