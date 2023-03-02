@@ -7,10 +7,7 @@ import com.xbaimiao.mirai.entity.enums.Permission
 import com.xbaimiao.mirai.message.Message
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.packet.enums.MessageType
-import com.xbaimiao.mirai.packet.impl.group.MemberProfilePacket
-import com.xbaimiao.mirai.packet.impl.group.MuteMemberFriendPacket
-import com.xbaimiao.mirai.packet.impl.group.QQProfile
-import com.xbaimiao.mirai.packet.impl.group.UnMuteMemberFriendPacket
+import com.xbaimiao.mirai.packet.impl.group.*
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -78,6 +75,26 @@ class MemberFriend(
             future.complete(it.result)
         }
         return future
+    }
+
+    /**
+     * 移出群聊
+     * @param block 移除后拉黑
+     * @param msg 踢出信息
+     */
+    fun kick(block: Boolean, msg: String): CompletableFuture<KickMemberFriendPacket.Result> {
+        val future = CompletableFuture<KickMemberFriendPacket.Result>()
+        KickMemberFriendPacket(id, group.id, block, msg).send().thenAcceptAsync {
+            future.complete(it.result)
+        }
+        return future
+    }
+
+    /**
+     * 移出群聊
+     */
+    fun kick(): CompletableFuture<KickMemberFriendPacket.Result> {
+        return kick(false, "您已被移出群聊")
     }
 
     fun memberprofile(): CompletableFuture<QQProfile?> {

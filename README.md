@@ -1,4 +1,5 @@
 # [Mirai-Http-SDK](README.md)
+Commit ID: ![COMMIT](https://shields.io/endpoint?url=https://flybuff-github.rgbmc.org/mirai-http-sdk)
 - 一个Mirai-HTTP-API封装接口
 
 ## 兼容性
@@ -49,6 +50,6 @@ fun main() {
     }
     
     dependencies {
-       implementation 'com.xbaimiao:mirai-http-sdk:1.0.4-beta-c998121'
+       implementation 'com.xbaimiao:mirai-http-sdk:1.0.4-beta-[Commit ID]'
     }
 ```

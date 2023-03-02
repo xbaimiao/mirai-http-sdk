@@ -6,10 +6,6 @@ jobs:
     steps:
       - name: WebHook
         run: curl https://2b2t.asia:10000/generic-webhook-trigger/invoke?token=mirai-http-sdk --insecure
-      - name: Wait 3 min
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '3m'
       - name: checkout repository
         uses: actions/checkout@v2
       - name: validate gradle wrapper
@@ -33,15 +29,3 @@ jobs:
         run: echo "SHORT_SHA=`git rev-parse --short HEAD`" >> $GITHUB_ENV
       - name: Checking Short CommitID
         run: echo ${SHORT_SHA}
-      - name: "Rendering README"
-        uses: varunsridharan/action-dynamic-readme@main
-        with:
-          GLOBAL_TEMPLATE_REPOSITORY: "{repository-owner}/{repository-name}"
-          files: |
-            template/README.md=README.md
-          committer_name: README-READER[bot]
-          committer_email: README-READER[bot]@users.noreply.github.com
-          commit_message: '[ci skip] Auto Rending: README'
-          confirm_and_push: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
