@@ -83,6 +83,8 @@ class WebSocketBot(config: WsInfo) {
     fun connect(): WebSocketBot {
         try {
             webSocket = WSListener(bot, URI(url))
+            webSocket.connectionLostTimeout = 0
+            webSocket.isReuseAddr = true
             webSocket.connectBlocking()
         } catch (e: ConnectException) {
             e.printStackTrace()
