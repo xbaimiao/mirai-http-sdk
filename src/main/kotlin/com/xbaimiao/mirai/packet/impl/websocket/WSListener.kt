@@ -13,6 +13,7 @@ import com.xbaimiao.mirai.message.MessageSource
 import com.xbaimiao.mirai.message.serialize.MiraiSerializer
 import com.xbaimiao.mirai.packet.CommandPacket
 import org.java_websocket.client.WebSocketClient
+import org.java_websocket.drafts.Draft_6455
 import org.java_websocket.handshake.ServerHandshake
 import java.io.StringReader
 import java.net.URI
@@ -21,7 +22,8 @@ import java.util.concurrent.CompletableFuture
 /**
  * 监听器
  */
-class WSListener(private val bot: WebSocketBot, serverUri: URI?) : WebSocketClient(serverUri) {
+class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
+    WebSocketClient(serverUri, Draft_6455(), null, 1000) {
 
     val putPackets = HashMap<Long, CommandPacket<*>>()
     var buffer = StringBuilder()
@@ -123,7 +125,7 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) : WebSocketClie
                     }
 
                     "BotJoinGroupEvent" -> {
-                        val botJoinGroupEvent: BotJoinGroupEvent;
+                        val botJoinGroupEvent: BotJoinGroupEvent
                         if (data.get("invitor").isJsonNull) {
                             botJoinGroupEvent = BotJoinGroupEvent(
                                 Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
@@ -266,7 +268,7 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) : WebSocketClie
                     }
 
                     "MemberJoinEvent" -> {
-                        val memberJoinEvent: MemberJoinEvent;
+                        val memberJoinEvent: MemberJoinEvent
                         if (data.get("invitor").isJsonNull) {
                             val member: MemberFriend =
                                 Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java)
