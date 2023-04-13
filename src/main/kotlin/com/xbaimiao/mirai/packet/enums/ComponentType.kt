@@ -17,6 +17,7 @@ enum class ComponentType(
     DICE("Dice"),
     JSON("Json"),
     MIRAI("MiraiCode"),
+    FORWARD_MESSAGE("Forward"),
     NULL("null");
 
     companion object {

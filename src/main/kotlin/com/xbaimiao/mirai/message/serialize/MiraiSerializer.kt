@@ -1,5 +1,6 @@
 package com.xbaimiao.mirai.message.serialize
 
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.xbaimiao.mirai.entity.MemberFriend
@@ -67,7 +68,7 @@ sealed interface MiraiSerializer<I, O> {
                         }
                         var url = ""
                         if (!it.get("url").isJsonNull) {
-                            url = it.get("url").asString;
+                            url = it.get("url").asString
                         }
                         var base64 = ""
                         if (!it.get("base64").isJsonNull) {
@@ -80,12 +81,17 @@ sealed interface MiraiSerializer<I, O> {
                         var base64 = ""
                         var voiceId = ""
                         if (!it.get("base64").isJsonNull) {
-                            base64 = it.get("base64").asString;
+                            base64 = it.get("base64").asString
                         }
                         if (!it.get("voiceId").isJsonNull) {
                             voiceId = it.get("voiceId").asString
                         }
                         component += Voice(voiceId, it.get("url").asString, base64, it.get("length").asLong)
+                    }
+
+                    ComponentType.FORWARD_MESSAGE -> {
+                        component += ForwardMessage(
+                            it.getAsJsonArray("nodeList").map { Gson().fromJson(it, ForwardNode::class.java) })
                     }
 
                     ComponentType.POKE -> component += Poke(PokeType.formString(it.get("name").asString))
