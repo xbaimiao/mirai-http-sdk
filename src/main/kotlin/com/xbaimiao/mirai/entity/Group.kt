@@ -12,6 +12,7 @@ import com.xbaimiao.mirai.packet.enums.MessageType
 import com.xbaimiao.mirai.packet.impl.group.EntityMembersPacket
 import com.xbaimiao.mirai.packet.impl.group.GetMemberInfoPacket
 import com.xbaimiao.mirai.packet.impl.group.MessageRecallPacket
+import com.xbaimiao.mirai.packet.impl.group.MuteAllPacket
 import java.util.concurrent.CompletableFuture
 
 class Group(
@@ -67,6 +68,14 @@ class Group(
 
     fun recall(member: MemberFriend, messageSource: MessageSource) {
         MessageRecallPacket(member.id, messageSource.messageId).send().thenAcceptAsync {}// ignore
+    }
+
+    fun muteAll() {
+        MuteAllPacket(id).send().thenAcceptAsync { }
+    }
+
+    fun unmuteAll() {
+        MuteAllPacket(id, true).send().thenAcceptAsync { }
     }
 
     override fun toString(): String {
