@@ -39,7 +39,7 @@ class FlashImage(
     }
 
     override fun serializeToPlainText(): String {
-        return "[动图]";
+        return "[闪照]"
     }
 
 }

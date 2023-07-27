@@ -17,4 +17,6 @@ open class GroupMessageEvent(
 
     fun reply(string: String) = group.sendMessage(Component.text(string))
 
+    fun recall() = group.recall(sender, messageSource)
+
 }

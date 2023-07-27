@@ -5,11 +5,13 @@ import com.google.gson.annotations.SerializedName
 import com.xbaimiao.mirai.entity.MiraiMessageTransmittable.Factory.sendTo
 import com.xbaimiao.mirai.entity.enums.Permission
 import com.xbaimiao.mirai.message.Message
+import com.xbaimiao.mirai.message.MessageSource
 import com.xbaimiao.mirai.message.component.BaseComponent
 import com.xbaimiao.mirai.message.component.Component
 import com.xbaimiao.mirai.packet.enums.MessageType
 import com.xbaimiao.mirai.packet.impl.group.EntityMembersPacket
 import com.xbaimiao.mirai.packet.impl.group.GetMemberInfoPacket
+import com.xbaimiao.mirai.packet.impl.group.MessageRecallPacket
 import java.util.concurrent.CompletableFuture
 
 class Group(
@@ -61,6 +63,10 @@ class Group(
 
     fun sendMessage(string: String): CompletableFuture<Message> {
         return sendMessage(Component.text(string))
+    }
+
+    fun recall(member: MemberFriend, messageSource: MessageSource) {
+        MessageRecallPacket(member.id, messageSource.messageId).send().thenAcceptAsync {}// ignore
     }
 
     override fun toString(): String {
