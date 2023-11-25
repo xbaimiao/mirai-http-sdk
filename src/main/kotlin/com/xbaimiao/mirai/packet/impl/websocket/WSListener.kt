@@ -436,7 +436,7 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                 //推送消息
                 return
             }
-            putPackets.keys.forEach {
+            HashSet(putPackets.keys).forEach {
                 if (syncId.toLong() == it) {
                     putPackets[it]!!.put(jsonObject.toString())
                 }
