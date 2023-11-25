@@ -7,5 +7,4 @@ open class BotInvitedJoinGroupRequestEvent(
     val groupName: String,
     val nick: String,
     val message: String
-) : SimpleEvent() {
-}
+) : SimpleEvent()

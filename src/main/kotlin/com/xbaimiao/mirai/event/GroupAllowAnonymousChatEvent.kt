@@ -8,5 +8,4 @@ open class GroupAllowAnonymousChatEvent(
     val operator: MemberFriend,
     val origin: Boolean,
     val current: Boolean
-) : SimpleEvent() {
-}
+) : SimpleEvent()

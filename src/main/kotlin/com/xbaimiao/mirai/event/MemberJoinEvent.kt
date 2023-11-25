@@ -7,5 +7,4 @@ open class MemberJoinEvent(
     val group: Group,
     val member: MemberFriend,
     val invitor: MemberFriend?
-) : SimpleEvent() {
-}
+) : SimpleEvent()

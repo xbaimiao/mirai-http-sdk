@@ -2,6 +2,7 @@ package com.xbaimiao.mirai.packet.impl.websocket
 
 import com.xbaimiao.mirai.entity.Friend
 import com.xbaimiao.mirai.entity.Group
+import com.xbaimiao.mirai.entity.MemberFriend
 import com.xbaimiao.mirai.eventbus.EventChancel
 import com.xbaimiao.mirai.packet.enums.EntityType
 import com.xbaimiao.mirai.packet.impl.group.BotProfilePacket
@@ -36,9 +37,15 @@ class WebSocketBot(config: WsInfo) {
     }
 
     fun getGroups(): CompletableFuture<List<Group>> {
+        profile().thenAcceptAsync {
+            if (it != null) {
+                botProfileCache = it
+            }
+        }
         return CompletableFuture<List<Group>>().apply {
             EntityListPacket<Group>(EntityType.GROUP).send().thenAcceptAsync {
                 groupCache = it.entitys
+                it.entitys.forEach { it.getMembers().thenAcceptAsync { } }
                 this.complete(it.entitys)
             }
         }
@@ -53,6 +60,11 @@ class WebSocketBot(config: WsInfo) {
     }
 
     fun getFriends(): CompletableFuture<List<Friend>> {
+        profile().thenAcceptAsync {
+            if (it != null) {
+                botProfileCache = it
+            }
+        }
         return CompletableFuture<List<Friend>>().apply {
             EntityListPacket<Friend>(EntityType.FRIEND).send().thenAcceptAsync {
                 friendCache = it.entitys
@@ -69,6 +81,14 @@ class WebSocketBot(config: WsInfo) {
         return groupCache.firstOrNull { it.id == id }
     }
 
+    fun getBotProfile(): QQProfile {
+        return botProfileCache
+    }
+
+    fun getBotMember(group: Long): MemberFriend? {
+        return groupBotMemberCache.get(group)
+    }
+
     val eventChancel = EventChancel
     val id = config.qq
 
@@ -79,6 +99,8 @@ class WebSocketBot(config: WsInfo) {
     private val url = config.baseUrl.replace("http", "ws") + "all?verifyKey=${config.authKey}&qq=${id}"
     var groupCache = arrayListOf<Group>()
     var friendCache = arrayListOf<Friend>()
+    lateinit var botProfileCache: QQProfile
+    var groupBotMemberCache = hashMapOf<Long, MemberFriend>()
 
     fun connect(): WebSocketBot {
         try {

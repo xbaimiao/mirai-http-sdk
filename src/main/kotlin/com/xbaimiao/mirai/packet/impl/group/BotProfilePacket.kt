@@ -6,8 +6,7 @@ import com.google.gson.JsonParser
 import com.xbaimiao.mirai.packet.CommandPacket
 import java.io.StringReader
 
-class BotProfilePacket(
-) : CommandPacket<BotProfilePacket>(
+class BotProfilePacket : CommandPacket<BotProfilePacket>(
     command = "botProfile",
     subCommand = "get",
     content = JsonObject().apply {

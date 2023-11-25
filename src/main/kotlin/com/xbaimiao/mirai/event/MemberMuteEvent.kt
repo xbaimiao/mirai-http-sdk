@@ -6,5 +6,4 @@ open class MemberMuteEvent(
     val durationSeconds: Int,
     val operator: MemberFriend,
     val member: MemberFriend
-) : SimpleEvent() {
-}
+) : SimpleEvent()

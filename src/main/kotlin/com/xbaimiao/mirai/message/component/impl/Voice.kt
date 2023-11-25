@@ -50,7 +50,7 @@ class Voice(
     }
 
     override fun serializeToPlainText(): String {
-        return "[语音] 时长: $length";
+        return "[语音] 时长: $length"
     }
 
 }

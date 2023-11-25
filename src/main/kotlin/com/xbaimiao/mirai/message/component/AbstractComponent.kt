@@ -25,9 +25,7 @@ abstract class AbstractComponent protected constructor(
 
         other as AbstractComponent
 
-        if (children != other.children) return false
-
-        return true
+        return children == other.children
     }
 
     override fun contentToString(): String {

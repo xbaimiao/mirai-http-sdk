@@ -8,5 +8,4 @@ open class GroupNameChangeEvent(
     val operator: MemberFriend,
     val origin: String,
     val current: String
-) : SimpleEvent() {
-}
+) : SimpleEvent()

@@ -13,5 +13,4 @@ class GroupActive(
     val isTitleVisible: Boolean,
     @SerializedName("temperatureTitles")
     val temperatureTitles: Map<Int, String>
-) {
-}
+)

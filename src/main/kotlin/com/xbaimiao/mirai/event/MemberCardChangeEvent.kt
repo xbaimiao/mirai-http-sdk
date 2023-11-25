@@ -6,5 +6,4 @@ open class MemberCardChangeEvent(
     val member: MemberFriend,
     val origin: String,
     val current: String
-) : SimpleEvent() {
-}
+) : SimpleEvent()

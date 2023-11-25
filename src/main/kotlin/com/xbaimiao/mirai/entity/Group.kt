@@ -13,6 +13,7 @@ import com.xbaimiao.mirai.packet.impl.group.EntityMembersPacket
 import com.xbaimiao.mirai.packet.impl.group.GetMemberInfoPacket
 import com.xbaimiao.mirai.packet.impl.group.MessageRecallPacket
 import com.xbaimiao.mirai.packet.impl.group.MuteAllPacket
+import com.xbaimiao.mirai.packet.impl.websocket.WebSocketBot
 import java.util.concurrent.CompletableFuture
 
 class Group(
@@ -41,6 +42,9 @@ class Group(
     fun getMembers(): CompletableFuture<List<MemberFriend>> {
         return CompletableFuture<List<MemberFriend>>().apply {
             EntityMembersPacket(this@Group).send().thenAcceptAsync {
+                it.friends.forEach {
+                    if (it.id == WebSocketBot.bot.id) WebSocketBot.bot.groupBotMemberCache.put(id, it)
+                }
                 this.complete(it.friends)
             }
         }
@@ -49,6 +53,9 @@ class Group(
     fun getMember(memberId: Long): CompletableFuture<MemberFriend?> {
         val future = CompletableFuture<MemberFriend?>()
         GetMemberInfoPacket(this.id, memberId).send().thenAcceptAsync {
+            if (it.memberFriend != null && it.memberFriend!!.id == WebSocketBot.bot.id) {
+                WebSocketBot.bot.groupBotMemberCache.put(id, it.memberFriend!!)
+            }
             future.complete(it.memberFriend)
         }
         return future

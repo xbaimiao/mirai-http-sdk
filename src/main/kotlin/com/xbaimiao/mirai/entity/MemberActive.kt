@@ -11,5 +11,4 @@ class MemberActive(
     val rank: Int,
     @SerializedName("honors")
     val honors: MutableList<String>
-) {
-}
+)

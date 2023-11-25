@@ -43,7 +43,7 @@ class Music(
     }
 
     override fun serializeToPlainText(): String {
-        return brief;
+        return brief
     }
 
 }

@@ -7,5 +7,4 @@ open class GroupAllowConfessTalkEvent(
     val origin: Boolean,
     val current: Boolean,
     val ByBot: Boolean
-) : SimpleEvent() {
-}
+) : SimpleEvent()

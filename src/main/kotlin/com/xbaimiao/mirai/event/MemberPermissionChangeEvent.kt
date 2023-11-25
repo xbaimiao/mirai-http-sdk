@@ -6,5 +6,4 @@ open class MemberPermissionChangeEvent(
     val member: MemberFriend,
     val origin: String,
     val current: String
-) : SimpleEvent() {
-}
+) : SimpleEvent()

@@ -6,5 +6,4 @@ open class MemberHonorChangeEvent(
     val member: MemberFriend,
     val action: String,
     val honor: String
-) : SimpleEvent() {
-}
+) : SimpleEvent()

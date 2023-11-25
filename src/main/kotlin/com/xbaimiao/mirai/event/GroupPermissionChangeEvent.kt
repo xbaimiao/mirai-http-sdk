@@ -6,5 +6,4 @@ open class GroupPermissionChangeEvent(
     val group: Group,
     val origin: String,
     val current: String
-) : SimpleEvent() {
-}
+) : SimpleEvent()

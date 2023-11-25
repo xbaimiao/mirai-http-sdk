@@ -9,5 +9,4 @@ open class GroupRecallEvent(
     val messageId: Int,
     val time: Int,
     val operator: MemberFriend
-) : SimpleEvent() {
-}
+) : SimpleEvent()

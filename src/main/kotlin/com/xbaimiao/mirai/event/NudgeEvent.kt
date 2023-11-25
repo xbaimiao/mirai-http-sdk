@@ -8,5 +8,4 @@ open class NudgeEvent(
     val action: String,
     val suffix: String,
     val target: Long
-) : SimpleEvent() {
-}
+) : SimpleEvent()

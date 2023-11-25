@@ -166,12 +166,17 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     }
 
                     "GroupRecallEvent" -> {
+                        val group = Gson().fromJson(data.get("group").asJsonObject, Group::class.java)
+                        val memberFriend =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject, MemberFriend::class.java
+                            )
                         val groupRecallEvent = GroupRecallEvent(
-                            Gson().fromJson(data.get("group").asJsonObject, Group::class.java),
+                            group,
                             data.get("authorId").asLong,
                             data.get("messageId").asInt,
                             data.get("time").asInt,
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                            memberFriend
                         )
                         EventChancel.call(groupRecallEvent)
                     }
@@ -198,11 +203,14 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     }
 
                     "GroupNameChangeEvent" -> {
-                        val member: MemberFriend =
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val group = Gson().fromJson(data.get("group").asJsonObject, Group::class.java)
+                        val memberFriend =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject, MemberFriend::class.java
+                            )
                         val groupNameChangeEvent = GroupNameChangeEvent(
-                            member.group,
-                            member,
+                            group,
+                            memberFriend,
                             data.get("origin").asString,
                             data.get("current").asString
                         )
@@ -210,11 +218,14 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     }
 
                     "GroupEntranceAnnouncementChangeEvent" -> {
-                        val member: MemberFriend =
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val group = Gson().fromJson(data.get("group").asJsonObject, Group::class.java)
+                        val memberFriend =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject, MemberFriend::class.java
+                            )
                         val groupEntranceAnnouncementChangeEvent = GroupEntranceAnnouncementChangeEvent(
-                            member.group,
-                            member,
+                            group,
+                            memberFriend,
                             data.get("origin").asString,
                             data.get("current").asString
                         )
@@ -222,11 +233,14 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     }
 
                     "GroupMuteAllEvent" -> {
-                        val member: MemberFriend =
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val group = Gson().fromJson(data.get("group").asJsonObject, Group::class.java)
+                        val memberFriend =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject, MemberFriend::class.java
+                            )
                         val groupMuteAllEvent = GroupMuteAllEvent(
-                            member.group,
-                            member,
+                            group,
+                            memberFriend,
                             data.get("origin").asBoolean,
                             data.get("current").asBoolean
                         )
@@ -234,11 +248,14 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     }
 
                     "GroupAllowAnonymousChatEvent" -> {
-                        val member: MemberFriend =
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val group = Gson().fromJson(data.get("group").asJsonObject, Group::class.java)
+                        val memberFriend =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject, MemberFriend::class.java
+                            )
                         val groupAllowAnonymousChatEvent = GroupAllowAnonymousChatEvent(
-                            member.group,
-                            member,
+                            group,
+                            memberFriend,
                             data.get("origin").asBoolean,
                             data.get("current").asBoolean
                         )
@@ -256,11 +273,14 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     }
 
                     "GroupAllowMemberInviteEvent" -> {
-                        val member: MemberFriend =
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val group = Gson().fromJson(data.get("group").asJsonObject, Group::class.java)
+                        val memberFriend =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject, MemberFriend::class.java
+                            )
                         val groupAllowMemberInviteEvent = GroupAllowMemberInviteEvent(
-                            member.group,
-                            member,
+                            group,
+                            memberFriend,
                             data.get("origin").asBoolean,
                             data.get("current").asBoolean
                         )
@@ -290,11 +310,15 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     }
 
                     "MemberLeaveEventKick" -> {
-                        val member: MemberFriend =
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java)
+                        val memberFriend = Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java)
+                        val operator =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(memberFriend.group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject,
+                                MemberFriend::class.java
+                            )
                         val MemberLeaveEventKick = MemberLeaveEventKick(
-                            Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java),
-                            member
+                            memberFriend,
+                            operator
                         )
                         EventChancel.call(MemberLeaveEventKick)
                     }
@@ -327,9 +351,14 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     "MemberMuteEvent" -> {
                         val member: MemberFriend =
                             Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java)
+                        val operator =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(member.group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject,
+                                MemberFriend::class.java
+                            )
                         val memberMuteEvent = MemberMuteEvent(
                             data.get("durationSeconds").asInt,
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java),
+                            operator,
                             member
                         )
                         EventChancel.call(memberMuteEvent)
@@ -338,8 +367,13 @@ class WSListener(private val bot: WebSocketBot, serverUri: URI?) :
                     "MemberUnmuteEvent" -> {
                         val member: MemberFriend =
                             Gson().fromJson(data.get("member").asJsonObject, MemberFriend::class.java)
+                        val operator =
+                            if (data.get("operator").isJsonNull) bot.getBotMember(member.group.id)!! else Gson().fromJson(
+                                data.get("operator").asJsonObject,
+                                MemberFriend::class.java
+                            )
                         val memberUnMuteEvent = MemberUnMuteEvent(
-                            Gson().fromJson(data.get("operator").asJsonObject, MemberFriend::class.java),
+                            operator,
                             member
                         )
                         EventChancel.call(memberUnMuteEvent)

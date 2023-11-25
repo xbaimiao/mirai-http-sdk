@@ -6,5 +6,4 @@ open class NewFriendRequestEvent(
     val groupId: Long,
     val nick: String,
     val message: String
-) : SimpleEvent() {
-}
+) : SimpleEvent()

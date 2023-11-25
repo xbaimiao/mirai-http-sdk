@@ -17,13 +17,13 @@ enum class MusicType(music: String) {
 
         fun StringToMusicType(type: String): MusicType {
             if (type.equals("NeteaseCloudMusic")) {
-                return Netease;
+                return Netease
             } else if (type.equals("QQMusic")) {
-                return QQ;
+                return QQ
             } else if (type.equals("KugouMusic")) {
-                return Kugou;
+                return Kugou
             }
-            return Netease;
+            return Netease
         }
     }
 }

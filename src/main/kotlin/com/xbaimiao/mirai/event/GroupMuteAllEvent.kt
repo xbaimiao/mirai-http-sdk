@@ -8,5 +8,4 @@ open class GroupMuteAllEvent(
     val operator: MemberFriend,
     val origin: Boolean,
     val current: Boolean
-) : SimpleEvent() {
-}
+) : SimpleEvent()

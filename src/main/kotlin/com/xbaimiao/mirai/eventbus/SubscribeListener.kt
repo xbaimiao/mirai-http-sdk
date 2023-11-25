@@ -10,5 +10,4 @@ package com.xbaimiao.mirai.eventbus
  * @author : WCPE
  * @since  : v1.0.3-alpha-dev-1
  */
-interface SubscribeListener {
-}
+interface SubscribeListener

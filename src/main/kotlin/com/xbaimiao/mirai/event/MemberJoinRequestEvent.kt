@@ -7,5 +7,4 @@ open class MemberJoinRequestEvent(
     val groupName: String,
     val nick: String,
     val message: String
-) : SimpleEvent() {
-}
+) : SimpleEvent()

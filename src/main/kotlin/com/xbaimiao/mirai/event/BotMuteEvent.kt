@@ -7,5 +7,4 @@ open class BotMuteEvent(
     val group: Group,
     val durationSeconds: Int,
     val operator: MemberFriend
-) : SimpleEvent() {
-}
+) : SimpleEvent()
